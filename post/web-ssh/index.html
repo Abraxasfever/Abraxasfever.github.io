@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>漏洞利用-SSH攻击 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>漏洞利用-SSH攻击</h1>
+            <p class="article-meta">
+              2020-08-12
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="1ssh环境搭建">1.SSH环境搭建</h2>
+<p>SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是较可靠，专为远程登录会话和其他网络服务提供安全性的协议。利用 SSH 协议可以有效防止远程管理过程中的信息泄露问题。</p>
+<h3 id="ubuntu搭建ssh服务端">Ubuntu搭建ssh服务端</h3>
+<pre><code>sudo apt-get install openssh-server
+</code></pre>
+<h3 id="centos搭建ssh服务器">CentOS搭建ssh服务器</h3>
+<pre><code>sudo yum -y install openssh-server --CentOS
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1597249422883.png" alt="" loading="lazy"></figure>
+<h3 id="ssh服务端服务启动与关闭">ssh服务端服务启动与关闭</h3>
+<p>启动、状态获取、关闭</p>
+<pre><code>Ubuntu：
+service ssh start
+service ssh status
+service ssh stop
+
+CentOS：
+/bin/systemctl start sshd.service
+ps -e | grep sshd
+netstat -an | grep 22
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://abraxasfever.github.io//post-images/1597249457105.png" alt="" loading="lazy"></figure>
+<h3 id="ubuntu搭建ssh客户端">Ubuntu搭建ssh客户端</h3>
+<h4 id="ubuntu下安装putty工具">Ubuntu下安装putty工具</h4>
+<pre><code>sudo apt-get install putty-tools
+</code></pre>
+<p>在软件中心搜索putty进行安装<br>
+客户端连接服务端<br>
+打开putty输入服务端信息，连接。</p>
+<h2 id="2ssh信息获取">2.SSH信息获取</h2>
+<h3 id="nmap获取ssh-banner信息">nmap获取ssh Banner信息</h3>
+<pre><code>nmap -sV -p 22 IP地址
+</code></pre>
+<h3 id="metasploit获取ssh-banner信息">Metasploit获取ssh Banner信息</h3>
+<pre><code>msfconsole
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://abraxasfever.github.io//post-images/1597249474744.png" alt="" loading="lazy"></figure>
+<pre><code>use auxiliary/scanner/ssh/ssh_version
+msf auxiliary(ssh_version)&gt;set rhosts IP
+msf auxiliary(ssh_version)&gt;set rport 22
+msf auxiliary(ssh_version)&gt;exploit
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://abraxasfever.github.io//post-images/1597249481360.png" alt="" loading="lazy"></figure>
+<h3 id="nc获取ssh-banner信息">nc获取ssh Banner信息</h3>
+<pre><code>nc IP地址 22
+</code></pre>
+<h3 id="配置ssh规避banner信息">配置ssh规避Banner信息</h3>
+<p>配置文件sshd_config中新加入一行。DebianBanner no 再次扫描发现没有操作系统信息</p>
+<h2 id="3ssh破解利用">3.SSH破解利用</h2>
+<h3 id="medusa-ssh弱口令破解">Medusa SSH弱口令破解</h3>
+<p>如果在设置SSH服务时，管理员设置了容易被猜解出来的用户名和密码（弱口令）。那么测试人员就可以使用对应的密码工具进行暴力破解弱口令。破解出来就可以使用对应的用户名和密码登录系统。<br>
+下面介绍Medusa对指定的ssh服务进行用户名和密码破解。</p>
+<pre><code>medusa -h IP地址 -u admin -P pass.txt -M ssh
+</code></pre>
+<h3 id="ssh命令行工具登录">SSH命令行工具登录</h3>
+<p>一般情况下Linux下都具有ssh客户端，用来登录ssh服务端<br>
+可以使用ssh 用户名@IP地址 然后根据提示输入密码</p>
+<h3 id="metasploit利用ssh登录反弹shell">Metasploit利用SSH登录反弹Shell</h3>
+<p><img src="https://abraxasfever.github.io//post-images/1597251968719.png" alt="" loading="lazy"><br>
+<img src="https://abraxasfever.github.io//post-images/1597251978303.png" alt="" loading="lazy"><br>
+<img src="https://abraxasfever.github.io//post-images/1597252049437.png" alt="" loading="lazy"></p>
+<h3 id="metasploit获取meterpreter-shell">Metasploit获取Meterpreter Shell</h3>
+<p>利用获得的Bash Shell，注入Metasploit中Meterpreter payload从而获取功能更强大的shell</p>
+<h2 id="4ssh安全防御">4.SSH安全防御</h2>
+<h3 id="ssh修改默认端口">SSH修改默认端口</h3>
+<p>默认情况下，SSH使用22端口。为了安全，一般情况下都会修改默认端口。</p>
+<pre><code>sudo gedit /etc/ssh/ssh_config
+</code></pre>
+<h3 id="ssh设置pgp登录">SSH设置PGP登录</h3>
+<p>默认情况下，SSH使用用户名和密码进行远程登录。但也可以使用密钥进行身份验证登录（公钥与私钥）。<br>
+生成SSH密钥。使用puttygen<br>
+<a href="http://www.chiark,greenend.org.uk/~sgtatham/putty/latest.html">下载连接</a><br>
+使用 ssh-keygen命令在Linux生成.ssh目录，在.ssh下新建密钥存储文件authorized_keys，并且复制私钥文件到.ssh目录下。使用命令puttygen -L“拷贝私钥文件”，将内容拷贝到authorized_keys文件中。<br>
+使用Putty客户端加载私钥文件进行连接。</p>
+<h3 id="ssh防暴力破解用户账号">SSH防暴力破解用户账号</h3>
+<p>在Linux下可以配置不能使用用户名和密码登录，只使用SSH PGP方式验证登录。规避了SSH暴力破解</p>
+<h3 id="iptables设置阈值防止暴力破解">Iptables设置阈值防止暴力破解</h3>
+<p>利用Iptables对多次连接验证错误，进行账户锁定120s</p>
+<pre><code>iptables -l INPUT -p --dport 22 -i eth0 -m state --state NEW recent --set
+iptables -l INPUT -p --dport 22 -i eth0 -m state --update --seconds 120 --hitcount 3 -j DROP
+</code></pre>
+<p>在设置完成后，需要重新启动SSH服务</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge secondary">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge ">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

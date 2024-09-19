@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>基础 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>基础</h1>
+            <p class="article-meta">
+              2020-07-29
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge success">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="搭建环境">搭建环境：</h2>
+<blockquote>
+<p>VMware+win08+kali+iis/apche+PHP+Mysql</p>
+</blockquote>
+<h2 id="windows基础">Windows基础：</h2>
+<ul>
+<li>
+<p>系统目录:</p>
+<blockquote>
+<p>windows 系统安装目录<br>
+system32 系统配置文件</p>
+</blockquote>
+</li>
+<li>
+<p>服务:</p>
+<blockquote>
+<p>Ctrl+r 输入services.msc<br>
+web dns dhcp 邮件 telent ssh ftp smb</p>
+</blockquote>
+</li>
+<li>
+<p>注册表:</p>
+<blockquote>
+<p>HKEY_CLASSES_ROOT 管理文件系统<br>
+HKEY_CURRENT_USER 当前用户信息<br>
+HKEY_LOCAL_MACHINE 当前系统硬件配置<br>
+HKEY_USERS 系统的用户信息<br>
+HKEY_CURRENT_CONFIG 当前用户的系统配置</p>
+</blockquote>
+</li>
+<li>
+<p>常用DOS命令以及批处理文件的编写:</p>
+<blockquote>
+<p>color 改变cmd颜色<br>
+ping -t -l 65500 ip 死亡之ping<br>
+ipconfig 查看ip<br>
+ipconfig/release 释放ip<br>
+ipconfig/renew 重新获取ip<br>
+systeminfo 查看系统信息<br>
+arp-a<br>
+net view 查看局域网内其他计算机名称<br>
+shutdown -s -t 180 -c“hacked”<br>
+dir 查看目录<br>
+cd 切换目录<br>
+start www.baidu.com 打开网页<br>
+start 123.txt 发开123.txt<br>
+md 目录名 创建目录<br>
+rd 123 删除文件夹<br>
+ren 原文件名 新文件名 重命名<br>
+del 删除文件<br>
+copy 复制<br>
+move 移动<br>
+tree 树形列出文件夹结构<br>
+telnet<br>
+net use k:\192.168.1.1\c<span class='katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \c at position 25: …k:\\192.168.1.1\̲c̲'>
+net use k:\\192.168.1.1\c</span>/del<br>
+net start 查看开启了那些服务<br>
+net start 服务名 开启服务<br>
+net stop 服务名 停止服务<br>
+net user 用户名 密码 /add建立用户<br>
+net user guest/active 激活guest<br>
+net user 查看有哪些用户<br>
+net user 账户名 查看账户的属性<br>
+net locaLGroup administrators 用户名/add 把用户添加到管理员中使其具有管理员权限<br>
+net user guest 12345 用guest用户登陆后将密码改为12345<br>
+net password 密码 更改系统登录密码<br>
+net share 查看本地开启的共享<br>
+net share ipc$ 开启ipc<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">共</mi><mi mathvariant="normal">享</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>s</mi><mi>h</mi><mi>a</mi><mi>r</mi><mi>e</mi><mi>i</mi><mi>p</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">共享
+net share ipc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord cjk_fallback">共</span><span class="mord cjk_fallback">享</span><span class="mord mathdefault">n</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">i</span><span class="mord mathdefault">p</span><span class="mord mathdefault">c</span></span></span></span>/del 删除ipc<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">共</mi><mi mathvariant="normal">享</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>s</mi><mi>h</mi><mi>a</mi><mi>r</mi><mi>e</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">共享
+net share c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord cjk_fallback">共</span><span class="mord cjk_fallback">享</span><span class="mord mathdefault">n</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span></span></span></span>/del 删除C：共享<br>
+netstat -a 查看开启了哪些端口<br>
+netsrat -n 查看端口的网络连接情况<br>
+netstat -v 查看正在进行的工作<br>
+at id号 开启已注册的某个计划任务<br>
+at/delete 停止所有计划任务，用参数/yes则不需要确认<br>
+at id号/delete 停止某个计划任务<br>
+at 查看所有的计划任务<br>
+attrib 文件名（目录名）查看某文件（目录）的属性<br>
+attrib 文件名 -A -R -S -H或+A +R +S +H<br>
+创建123.txt:</p>
+<blockquote>
+<p>conpy con c:\123.txt<br>
+hello cracer<br>
+ctrl+z 回车</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>批处理:</p>
+<blockquote>
+<p>新建批处理文件<br>
+新建一个文本文档保存时后缀改为.bat<br>
+copy con 123.bat</p>
+</blockquote>
+</li>
+<li>
+<p>快捷键:</p>
+<blockquote>
+<p>F1 显示当前程序或者window的帮助内容<br>
+F2 当你选中一个文件的话，这意味着重命名<br>
+F3 当你在桌面上的时候是打开“查找：所有文件”对话框<br>
+ALT+F4 关闭当前程序中的当前文本<br>
+F5 刷新<br>
+CTTRL+F5 强行刷新<br>
+CTRL+F6 切换到当前应用程序中的下一个文本（+shift到前一个）<br>
+F10/ALT 激活当前程序的菜单栏<br>
+windows键或CTRL+ESC 打开开始菜单<br>
+CTRL+ALT+DELETE 在win9x中打开关闭程序对话框<br>
+DELETE 删除<br>
+SHIFT+DELETE 直接删除<br>
+CTRL+N 新建文件<br>
+CTRL+O 打开“打开文件”对话框<br>
+CTRL+P 打印 对话框<br>
+win+M 最小化<br>
+win+CTRL+M 恢复<br>
+win+break 打开系统属性对话框<br>
+win+CTRL+F 打开查找：计算机 对话框<br>
+shift+F10 打开当前活动项目的快捷菜单<br>
+ALT+TAB 切换当前程序<br>
+ALT+ESC 切换当前程序<br>
+ALT+ENTER 将windows下运行的DOS窗口在窗口和全屏状态之间切换</p>
+</blockquote>
+</li>
+<li>
+<p>系统优化:</p>
+<blockquote>
+<p>修改启动项<br>
+msconfig<br>
+加快系统启动速度<br>
+窗口切换提速<br>
+工具优化</p>
+</blockquote>
+</li>
+<li>
+<p>登陆密码破解:</p>
+<blockquote>
+<p>启动U盘破解<br>
+对hash值破解</p>
+<blockquote>
+<p>lc5<br>
+彩虹表</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>手动清除木马:</p>
+<blockquote>
+<p>查看开机启动项<br>
+查询服务<br>
+查看网络端口</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="linux基础">Linux基础</h2>
+<ul>
+<li>
+<p>快捷键:</p>
+<blockquote>
+<p>TAB自动补齐<br>
+\ 强制换行<br>
+Ctrl+U 清空至行首<br>
+Ctrl+K 清空至行尾<br>
+Ctrl+L 清屏</p>
+</blockquote>
+</li>
+<li>
+<p>命令：</p>
+<blockquote>
+<p>uname -r 查看版本号<br>
+uname -a 查看更多信息<br>
+hostname 查看主机名<br>
+ifconfig 查看ip<br>
+cat/proc/cpuinfo 查看cpu<br>
+pwd 查看当前路径<br>
+cd 切换工作目录（.. ~)<br>
+ls 目录操作<br>
+du 查看文件占用大小<br>
+df / df -h filename 检查文件系统的磁盘空间占用情况<br>
+mkdir 创建目录<br>
+touch 新建空文件<br>
+ln 为文件或目录创建链接<br>
+rm 删除<br>
+mv 移动文件<br>
+find 查看文件或目录<br>
+. 重复前一命令 .<br>
+u 取消上一个命令<br>
+cat 1 2 &gt; 3 合并文件<br>
+cat / etc/group 查看组<br>
+ls -al/etc/group 查看组最后的修改时间<br>
+cat /etc/passwd 查看用户信息<br>
+cat /etc/passwd |wc -l 查看用户个数<br>
+cat /etc/shadow 查看用户密码<br>
+cat/etc/shadow |grep username 查看指定用户的密码<br>
+passswd username 修改用户密码<br>
+useradd username 增加用户<br>
+userdel username 删除用户<br>
+cat/etc/passwd |awk -F ':' '{print $序号}'</p>
+</blockquote>
+</li>
+<li>
+<p>查找命令</p>
+<blockquote>
+<p>find 范围 -类型 查找的内容<br>
+find -name file-name 找文件<br>
+find path -user file-name 某路径下用户的文件<br>
+find path -empty 查找空文件和控目录<br>
+find /nourse 作废用户的文件<br>
+find path -perm 权限数 显示某路径下权限数为n的文件<br>
+find path -amin -minute 最后n分钟访问的文件<br>
+find / user username 查找某一用户所属文件<br>
+find path -atime -days 最后n天访问的文件<br>
+find path -mmin -minute 最后n分钟修改的文件<br>
+find path -mtime -days 最后n天修改的文件</p>
+</blockquote>
+</li>
+<li>
+<p>计划任务</p>
+<blockquote>
+<p>crontab -e 进入编辑模式，设定计划任务<br>
+格式：（如下表）<br>
+Ctrl+x 退出<br>
+crontab -l 查看计划任务</p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>分</th>
+<th>时</th>
+<th>日</th>
+<th>月</th>
+<th>周</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30</td>
+<td>13</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td>touch/root/桌面/111</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>文件权限</p>
+<blockquote>
+<p>chmod 777 file 配置权限<br>
+chmod -R 777 file 递归更改权限<br>
+chmod +/- file 加减权限<br>
+chowm -r 更改文件属主</p>
+</blockquote>
+</li>
+<li>
+<p>文件压缩：</p>
+<blockquote>
+<p>Tar压缩:</p>
+<blockquote>
+<p>tar -cf file.tar file<br>
+tar -xf file.tar<br>
+-c 创建归档文件<br>
+-x 解开归档文件<br>
+-t 列表查看包内文件<br>
+-v 输出详细信息<br>
+-P 解包时保留原始文件及目录的权限<br>
+-C 解包时指定释放的目标文件夹<br>
+-z 调用gzip程序 进行解压或压缩<br>
+-j 调用bzip2程序 进行解压或压缩<br>
+-r 追加tar文件至归档结尾<br>
+Gz压缩:<br>
+gzip -9 file<br>
+gunzip file<br>
+-9 显示高压缩比<br>
+-d 释放压缩文件</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>文件查看：</p>
+<blockquote>
+<p>cat	顺序查看<br>
+tac	逆序查看<br>
+nl	带序号查看<br>
+more	<br>
+less	<br>
+head	<br>
+tail</p>
+</blockquote>
+</li>
+<li>
+<p>安装、升级、卸载RPM软件包:</p>
+<blockquote>
+<p>rpm [选项] RPN包文件<br>
+-i 安装一个新的rpm软件包<br>
+-U 升级某个rpm<br>
+-F 更新某个rpm<br>
+-e 卸载某个rpm<br>
+-force 强制安装所指定的rpm软件包<br>
+-nodeps 安装、升级或卸载软件时候，忽略依赖关系<br>
+-h 以#显示安装进程<br>
+-v 显示安装过程中的详细信息</p>
+</blockquote>
+</li>
+<li>
+<p>Vim:</p>
+<blockquote>
+<p>Vim基本操作：</p>
+<blockquote>
+<p>vi [-options] [+[n]] [file](-R 以只读打开 -r 恢复因为系统崩溃而丢失的文件)<br>
+vim 文件名	打开/创建 一个文件</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>插入模式：</p>
+<blockquote>
+<p>I	光标前插入<br>
+a	光标后插入<br>
+o	下一行插入<br>
+I	行首插入<br>
+A	行末插入<br>
+O	上一行插入<br>
+ESC	退出插入模式<br>
+编辑模式：<br>
+：set nu	设置行号<br>
+：set nonu	取消行号<br>
+定位命令：<br>
+gg	首行<br>
+G	尾行<br>
+nG	N行<br>
+0	行首<br>
+$	行尾<br>
+hjkl	左下上右<br>
+删除的命令：<br>
+x	删一个<br>
+nx	删n个<br>
+dd	删一行<br>
+dG	删到最后<br>
+D	删到行尾<br>
+复制剪切的命令：<br>
+yy	复制<br>
+nyy	复制n行<br>
+dd	剪贴<br>
+ndd	剪贴n行<br>
+p	粘贴到下一行<br>
+P	粘贴到上一行<br>
+替换命令：<br>
+r	替换<br>
+R	连续替换<br>
+查找命令：<br>
+/string	查找string<br>
+n	下一个<br>
+：set ic	不区分大小写<br>
+：set noic	区分大小写<br>
+：%s/old/new/g	不询问替换<br>
+：%s/old/new/c	询问替换<br>
+小技巧：<br>
+：r！date	插入时间信息到当前文档<br>
+：map CTRL+V+快捷键操作	自定义快捷键<br>
+退出操作：<br>
+：wq	保存退出<br>
+：q!	不保存退出<br>
+ZZ	快捷键：保存退出</p>
+</blockquote>
+</blockquote>
+</li>
+<li>
+<p>Gcc操作：</p>
+<blockquote>
+<p>gcc hello.c -o hello	预处理+编译+汇编+连结<br>
+-s	预处理 编译<br>
+-c	预处理 编译 汇编<br>
+-C	保留注释<br>
+-g	生成调试信息</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="kali">Kali：</h2>
+<p>Kali Linux是基于Debian和Linux发行版，设计用于数字取证和渗透测试的操作系统</p>
+<ul>
+<li>
+<p>Nessus</p>
+<blockquote>
+<p>可以同时在本地和远端对漏洞扫描<br>
+scp 文件 root@ip地址:/要到的目录<br>
+scp root@ip(远程地址):/目录/文件/本机的目录<br>
+ls 查看<br>
+rpm -ivh</p>
+</blockquote>
+</li>
+<li>
+<p>安装httpd</p>
+<blockquote>
+<p>安装httpd yum install httpd<br>
+启动httpd<br>
+查看状态<br>
+启动</p>
+</blockquote>
+</li>
+<li>
+<p>rpm套餐</p>
+<blockquote>
+<p>rpm -qa 查看安装过的软件包<br>
+rpm -qa |grep 安装包名 把相关的包都会列出来<br>
+rpm -q 安装包名 查询某个软件包全名<br>
+rpm -ql 安装包名 查看安装在哪里目录下写入文件，不跟后缀<br>
+rpm -qlp 安装包名 查看没有安装过的包会写入哪些文件<br>
+rpm -af 文件路径 查看文件是哪个包写入的<br>
+rpm -evh 软件名 卸载软件</p>
+</blockquote>
+</li>
+<li>
+<p>systemctl套餐</p>
+</li>
+</ul>
+<blockquote>
+<p>systemctl start 启动<br>
+sysytemctl restart 重启<br>
+systemctl stop 停止<br>
+systemctl status 查看状态<br>
+systemctl enable 开机自动启动</p>
+</blockquote>
+<ul>
+<li>
+<p>yum 套餐</p>
+<blockquote>
+<p>yum -y install 软件名 下载安装<br>
+yum -y localinstall 软件包名 安装软件<br>
+yum -y localinstall *.rpm 本地批量安装<br>
+yum update 全部更新<br>
+yum update 包名 更新某个包<br>
+yum check-update 检查可更新的包<br>
+yum grouplist 列举系统中以组安装的包<br>
+yum remove 软件包名 卸载软件<br>
+yum groupremove 组名 删除程序组<br>
+yum deplist 包名 查看依赖关系<br>
+yum clean all 清除全部缓存<br>
+yum makecache 更新源<br>
+yum list |grep 包名 查看有没有对应的包</p>
+</blockquote>
+</li>
+<li>
+<p>debian套餐</p>
+<blockquote>
+<p>dpkg -i 包名 安装软件<br>
+dpkg -L 软件全名 软件安装到什么地方<br>
+dpkg -l 软件全名 改安装包的版本<br>
+dpkg -r 软件名 删除软件但保留配置文件<br>
+dpkg -P 软件名 删除软件并且清空配置文件<br>
+dpkg -s 软件全名 查看软件的详细信息<br>
+dpkg -c 安装包 查看安装该软件会在哪写入数据</p>
+</blockquote>
+</li>
+<li>
+<p>apt-get套餐</p>
+<blockquote>
+<p>apt-get update 更新源<br>
+apt-get upgrade 更新系统<br>
+apt-get install 包名 安装软件<br>
+apt-get remove 包名 删除软件<br>
+apt-cache search 某个关键字 搜索需要的软件包含在哪个包里<br>
+apt-get clean 清空缓存包</p>
+</blockquote>
+</li>
+<li>
+<p>文本套餐</p>
+<blockquote>
+<p>cat 文件名 |grep 要检索的字 检索关键字<br>
+car 文件名 |grep -v 要去除的字 检索去除了字之后的文本<br>
+cat 文件名 |sort 文本排序 数字按照123 字母按照abc<br>
+cat 文件名 |uniq 文本去重<br>
+cat 文件名 wc -l 计算行数<br>
+旧的文本&gt;&gt;新的文本 文本重定向<br>
+diff 文本1的名字 文本2的名字 比较文本的差异<br>
+split -l 要分割成多少的个数 被分割的文本名字</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="网络基础">网络基础</h2>
+<ul>
+<li>
+<p>网络架构</p>
+</li>
+<li>
+<p>OSI分层模型:</p>
+<blockquote>
+<p>应用层 应用程序之间通信<br>
+表示层 处理数据格式、数据加密等<br>
+会话层 建立、维护和管理会话<br>
+传输层 建立主机端到端的链接<br>
+网络层 寻址和路由选择<br>
+数据链路层 提供介质访问、链路管理等<br>
+物理层 比特流传输</p>
+</blockquote>
+</li>
+<li>
+<p>HTTP协议：</p>
+<blockquote>
+<p>抓个报文 kali里 curl-I www.baidu.com</p>
+<blockquote>
+<p>200 响应码<br>
+date 日期<br>
+content-type 类型<br>
+Accrpt-Charset 浏览器可接受的字符集<br>
+Connect-Length 表示请求的消息正文的长度<br>
+Cookie 最重要的请求头信息之一<br>
+静态网站：全部由HTML代码格式页面组成的网站，文件名均以htm、html、shtml等为后缀。<br>
+动态网站：通过数据库架构，一般以asp、jsp、php、aspx等为后缀。<br>
+伪静态网站</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge success">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge warning">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

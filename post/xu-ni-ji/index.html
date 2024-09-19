@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>虚拟机以及常用环境搭建 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>虚拟机以及常用环境搭建</h1>
+            <p class="article-meta">
+              2020-08-04
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge success">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="vmware-workstation">VMware Workstation</h2>
+<p>虚拟机，指的是通过软件模拟的具有完整硬件西塘功能的、运行在一个完全隔离环境中的完整计算机系统<br>
+Vmware Workstation 功能强大的桌面虚拟计算机软件，提供用户可在单一的桌面上同时运行 不同的操作系统和进行开发、测试、部署新的应用程序的最佳解决方案。<br>
+http：//www.vmware.com/</p>
+<h3 id="vmware中的网络分类">Vmware中的网络分类</h3>
+<p>Vmware中具有四种不同的网络模式。其中自定义模式更具有扩展性，方便构建自定义网络。</p>
+<h4 id="桥接模式">桥接模式：</h4>
+<p>比较常用的一种网络模式，用来设置虚拟机与主机具有同等地位，前提是需要在动态分配Ip地址网路中，如果在静态分配Ip地址的网络中，需要手动设置对应的IP地址.</p>
+<h4 id="nat模式vmnet8">NAT模式（VMnet8）：</h4>
+<p>NAT网络地址转换，主机与虚拟机构成一个网络，虚拟机可以与主机以外的网络通信，但是主机以外的网络无法与虚拟机通信。</p>
+<h4 id="仅主机模式vmnet1">仅主机模式（VMnet1）：</h4>
+<p>虚拟机完全封闭，不与外部网络通信，但是可以与当前主机进行通信。</p>
+<h4 id="vm中的虚拟网络编辑器">vm中的虚拟网络编辑器</h4>
+<p>对网络和网卡进行修改配置</p>
+<h4 id="vm中修改默认设置">vm中修改默认设置</h4>
+<p>修改默认的IP地址分配</p>
+<h4 id="vm中添加新的网络">vm中添加新的网络</h4>
+<h4 id="vm中添加新网卡">vm中添加新网卡</h4>
+<p>实质是添加新的网卡配置<br>
+在linux下<br>
+gedit interfaces</p>
+<h3 id="ssh服务">SSH服务</h3>
+<h4 id="配置kali-linux下的ssh">配置kali linux下的SSH</h4>
+<p>默认情况下kali下的SSH不允许Root用户远程登录SSH，需要修改配置文件</p>
+<pre><code>/etc/ssh/ssd_config
+service ssh start
+service ssh status  
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1597074892187.jpg" alt="" loading="lazy"></figure>
+<h4 id="使用putty连接ssh">使用Putty连接SSH</h4>
+<p>著名的第三方SSH服务客户端<br>
+前提 开启SSH服务<br>
+netstat -pantu | grep 22<br>
+<img src="https://abraxasfever.github.io//post-images/1597123855609.png" alt="" loading="lazy"><br>
+<img src="https://abraxasfever.github.io//post-images/1597124011423.png" alt="" loading="lazy"></p>
+<h4 id="vm中自带ssh连接">Vm中自带SSH连接</h4>
+<p>调用安装好的openssh连接对应虚拟机的ssh服务端</p>
+<h4 id="kali-linux下关于ssh需要掌握的网络命令">Kali linux下关于ssh需要掌握的网络命令</h4>
+<p>netstat -pantu 查看当前tcp udp监听端口<br>
+service ssh start 开启ssh服务<br>
+ifconfig 查看当前ip地址<br>
+/etc/init.d/networking restart 重新启动网卡<br>
+ssh root@IP地址 使用root用户登录ssh服务</p>
+<h2 id="常用的虚拟机搭建环境">常用的虚拟机搭建环境</h2>
+<h3 id="kali-linux">Kali linux</h3>
+<p>基于Debian的Linux发行版本，设计用于安全检测操作系统，内部集成了600+安全工具。<br>
+<a href="https://www.kali.org/">官网下载</a><br>
+更新kali</p>
+<pre><code>apt update &amp;&amp; apt upgrade &amp;&amp; apt dist-upgrade
+</code></pre>
+<h4 id="kali2020">kali2020</h4>
+<p>默认用户由root改为kali，于是，很多命令无法直接使用，在设置共享文件夹以及界面语言方面都有了不小的难度，在经历了安装搜狗输入法失败后，成功安装了谷歌输入法<br>
+汉化：</p>
+<pre><code>cd /etc/apt/
+sodu vim sources.list
+#中科大的源
+    deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+    deb http://mirrors.ustc.edu.cn/kali kali-rolling main contrib non-free
+    deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main contrib non-free
+    deb http://mirrors.ustc.edu.cn/kali-security kali-current/updates main contrib non-free
+    deb-src http://mirrors.ustc.edu.cn/kali-security kali-current/updates  main contrib non-free
+sudo apt-get update
+sudo apt-get install ttf-wqy-microhei ttf-wqy-zenhei xfonts-wqy fonts-wqy-zenhei fonts-wqy-microhei
+sudo dpkg-reconfigure locales
+空格选中en_US.UTF-8 UTF-8和zh_CN.UTF-8 UTF-8以及zh_CN.GBK GBK
+然后默认zh_CN.UTF-8
+sudo reboot
+</code></pre>
+<p>安装谷歌输入法：</p>
+<pre><code>sudo apt-get update &amp;&amp; apt-get upgrade
+sudo apt-get install fcitx
+sudo apt-get install fcitx-googlepinyin
+sudo reboot
+</code></pre>
+<p>然后就可以使用CTRL+SPACE切换输入法，输入中文了，感谢万能的网络！</p>
+<h3 id="ubuntu-linux-介绍">ubuntu linux 介绍</h3>
+<p>Ubuntu 是一个以桌面应用为主的开源GNU/Linux操作系统<br>
+<a href="https://cn.ubuntu.com/">官网下载</a></p>
+<h3 id="metasploitable2">Metasploitable2</h3>
+<p>特别制作的Ubuntu操作系统。本身设计作为安全工具测试和演示常见漏洞攻击。<br>
+默认只开起一个网络适配器并且开启NAT和Host-only，本镜像一定不要暴漏在公网下。<br>
+<a href="https://sourceforge.net/projects/metasploitable/">官网下载</a></p>
+<h3 id="win2003以及win7">win2003以及win7</h3>
+<p><a href="https%EF%BC%9A//msdn.itellyou.cn/">MSDN</a></p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge success">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge warning">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

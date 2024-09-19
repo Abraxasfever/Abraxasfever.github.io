@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>端口扫描 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>端口扫描</h1>
+            <p class="article-meta">
+              2020-08-07
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="端口介绍">端口介绍</h2>
+<p>端口，可以认为是设备与外界通讯交流的出口。端口可分为虚拟端口，其中虚拟端口指的是计算机内部端口，不可见。<br>
+一台用于IP地址的主机可以提供许多服务，比如Web服务、FTP服务、SMTP服务等，这些服务完全可以通过1个IP地址来实现。是通过IP地址+端口号来区分不同服务的。<br>
+因此，一个开放的端口就代表一个服务，不同服务具有不同的端口号，因此要对服务进行测试，首先 要确定是否开放对应端口号。</p>
+<h3 id="端口分类">端口分类</h3>
+<p>端口范围0-65535<br>
+TCP端口和UDP端口。由于TCP和UDP两个协议是独立的，因此各自的端口号也是相互独立，两者并不冲突。</p>
+<h3 id="端口分为">端口分为：</h3>
+<p>１. 周知端口<br>
+周知端口是众所周知的端口号，范围从0-1023，其中80端口分配给WWW服务，21端口分配给FTP服务等。我们在IE的地址栏输入一个网址的时候是不必指定端口号的，因为在默认情况下ＷＷＷ服务的端口是“80”。<br>
+２. 动态端口<br>
+动态端口的范围是49152-65535.之所以称为动态端口，是因为它一般不固定分配某种服务，而是动态分配。<br>
+３. 注册端口<br>
+端口从1024-49151，分配给用户进程或应用程序，这些进程主要是用户安装的程序。</p>
+<h2 id="端口扫描">端口扫描</h2>
+<h3 id="端口扫描工具-nmap">端口扫描工具-Nmap</h3>
+<h4 id="nmap具有多张扫描端口的技术">Nmap具有多张扫描端口的技术</h4>
+<pre><code>nmap IP地址
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1597235583789.png" alt="" loading="lazy"></figure>
+<h4 id="端口banner获取">端口Banner获取</h4>
+<pre><code>nmap IP地址 --script banner -p 端口号/端口范围
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://abraxasfever.github.io//post-images/1597235820018.png" alt="" loading="lazy"></figure>
+<h4 id="端口服务版本信息的获取">端口服务版本信息的获取</h4>
+<p>利用Nmap获取目标系统的端口版本信息：</p>
+<pre><code>nmap -p 端口号 -sV IP地址
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://abraxasfever.github.io//post-images/1597235982545.png" alt="" loading="lazy"></figure>
+<h4 id="操作系统版本信息获取">操作系统版本信息获取</h4>
+<p>使用nmap扫描指定主机的操作系统版本信息。</p>
+<pre><code>nmap -O IP地址
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://abraxasfever.github.io//post-images/1597236146639.png" alt="" loading="lazy"></figure>
+<h4 id="完整操作系统版本信息获取">完整操作系统版本信息获取</h4>
+<pre><code>namp -A -v IP地址 （-T4 快速模式）
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://abraxasfever.github.io//post-images/1597237044157.png" alt="" loading="lazy"></figure>
+<h3 id="端口扫描工具-dmitry">端口扫描工具-Dmitry</h3>
+<h4 id="使用dmitry进行端口扫描">使用dmitry进行端口扫描</h4>
+<pre><code>dmitry -p IP地址
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://abraxasfever.github.io//post-images/1597239841984.png" alt="" loading="lazy"></figure>
+<h4 id="端口banner获取-2">端口Banner获取</h4>
+<pre><code>dmitry -pb IP地址
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://abraxasfever.github.io//post-images/1597239919419.png" alt="" loading="lazy"></figure>
+<h3 id="端口扫描工具-netcat">端口扫描工具-netcat</h3>
+<h4 id="使用netcat进行端口扫描">使用netcat进行端口扫描</h4>
+<pre><code>nc -nvz IP地址 端口范围
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://abraxasfever.github.io//post-images/1597239996078.png" alt="" loading="lazy"></figure>
+<h4 id="端口banner获取-3">端口Banner获取</h4>
+<pre><code>nc -vn IP地址 端口号
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="https://abraxasfever.github.io//post-images/1597243627106.png" alt="" loading="lazy"></figure>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge secondary">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge ">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

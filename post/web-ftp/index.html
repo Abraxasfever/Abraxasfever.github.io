@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>漏洞利用-FTP | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>漏洞利用-FTP</h1>
+            <p class="article-meta">
+              2020-08-09
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="ftp漏洞利用">FTP漏洞利用</h2>
+<h3 id="ftp协议介绍">FTP协议介绍</h3>
+<p>文件传输协议，是用于在网络上文件传输的一套标准协议，使用客户/服务器模式。它属于网络传输协议的应用层。<br>
+FTP使用21号端口</p>
+<h4 id="用户分类">用户分类：</h4>
+<ol>
+<li>Real用户</li>
+<li>Administrator</li>
+<li>匿名用户</li>
+</ol>
+<h4 id="ftp文件传输格式">FTP文件传输格式</h4>
+<p>1.ASCII<br>
+2.二进制格式</p>
+<h3 id="利用ftp匿名登录漏洞">利用FTP匿名登录漏洞</h3>
+<p>由于FTP没有禁止匿名用户，所以可以直接使用Anonymous用户直接登录FTP服务器，使用nc 连接FTP</p>
+<pre><code>nmap -p 21 IP地址
+</code></pre>
+<p><img src="https://abraxasfever.github.io//post-images/1597245636236.png" alt="" loading="lazy"><br>
+nmap --script vuln -p 21 IP地址</p>
+<pre><code>nc IP地址 21
+USER Anonymous
+PASS 123
+HELP
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1597245511596.png" alt="" loading="lazy"></figure>
+<h3 id="利用ftp后门漏洞">利用FTP后门漏洞</h3>
+<p>vsftpd手工触发漏洞：当进行FTP认证时，如果用户名USER中包含:)，那么直接就可以触发监听6200端口的连接的shell。</p>
+<h3 id="ftp安全配置">FTP安全配置</h3>
+<p>修改配置文件，禁止匿名用户登录<br>
+对=特定漏洞进行打补丁，或者设置防火墙禁止连接后门端口<br>
+iptables -A INPUT -p tcp -dport 6200 -j DROP<br>
+iptables -A OUTPUT -p tcp sport 6200 -j DROR</p>
+<h3 id="ftp用户名密码暴力破解">FTP用户名密码暴力破解</h3>
+<p>环境搭建：win2003FTP<br>
+Windows下CMD命令添加用户，以添加Administrator管理员权限。<br>
+net user 用户名 用户密码 /add<br>
+net localgroup administrators 用户名 /add<br>
+Windows下FTP服务器添加用户操作</p>
+<p>使用medusa包里破解FTP登录<br>
+medusa -h IP地址 -u 用户名 -P /root/Desktop/pass.txt -M ftp</p>
+<h3 id="ftp用户名明文密码验证">FTP用户名明文密码验证</h3>
+<p>FTP协议用于用户认证的过程中，客户端与服务器是通过明文进行交互信息的。验证FTP登录过程中明文传输用户名和密码。<br>
+wireshark抓包</p>
+<h3 id="ftp用户名明文密码嗅探">FTP用户名明文密码嗅探</h3>
+<p>利用arpspoof进行ARP嗅探<br>
+arpspoof -i eth0 网关IP -t IP地址</p>
+<h3 id="ftp登录之后做的事情">FTP登录之后做的事情</h3>
+<p>可以利用metasploit创建反弹shell上传到FTP服务器。可以利用setoolkit快速生成反弹shell</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge success">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge warning">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

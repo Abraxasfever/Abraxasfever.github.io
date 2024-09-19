@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>我在校园自动打卡 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>我在校园自动打卡</h1>
+            <p class="article-meta">
+              2021-01-29
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <p>我在校园打卡的每日自动实现<br>
+1.首先得fiddle抓包微信小程序<br>
+因为安卓7.0版本的微信小程序已经无法轻易抓包，我使用了PC版微信自带的微信小程序，PC端微信的http服务建立在IE浏览器的基础上，所以，给IE设置代理到fiddler，轻松实现抓包获取token。<br>
+2.微信搜索喵提醒，注册喵提醒，创建一个提醒，保存喵码待会要用。<br>
+3.编写py代码，实现功能，需要改的用*代替了，代码如下。</p>
+<pre><code>import json
+import logging
+import requests, time, random
+import datetime
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+# 健康打卡提交后字典的参数，返回中文
+def get_status(self):
+    if self['code'] == 0:
+        return &quot;自动打卡(健康打卡)成功&quot;
+    elif self['code'] == 1:
+        return &quot;健康打卡时间结束&quot;
+    elif self['code'] == -10:
+        return &quot;Token已失效,请及时更换Token值&quot;
+    else:
+        return &quot;发生未知错误,请及时检查!&quot;
+
+class Do:
+    def __init__(self):
+    
+        # 喵提醒通知
+        self.notifytoken = '****'  # 喵码  填入第一步申请的喵码
+
+        self.api = &quot;https://student.wozaixiaoyuan.com/health/save.json&quot; # 健康打卡 提交地址
+        self.headers = {
+            &quot;Host&quot;: &quot;student.wozaixiaoyuan.com&quot;,
+            &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;,
+            &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;,
+            &quot;Connection&quot;: &quot;keep-alive&quot;,
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat&quot;,	# 用Fiddler抓包的User-Agent值修改
+            &quot;Referer&quot;: &quot;https://servicewechat.com/*****/page-frame.html&quot;,	# 用Fiddler抓包的Referer值修改
+            &quot;token&quot;: &quot;**************&quot;,  # 用Fiddler抓包的token值(需定期更换)修改 一个token大约能用3到4天
+             &quot;Content-Length&quot;: &quot;29&quot;,
+              }   # 以上都可以在抓包中获取参数信息  可修改
+    
+        # 健康打卡数据
+        self.data = {
+            &quot;answers&quot;: '[&quot;0&quot;,&quot;1&quot;,&quot;36.2&quot;]', 
+            #  answer是健康打卡的问题答案，从左到右依次是第一题到最后一题的答案
+            #  其中选择题的0代表第一个选项，1代表第二个选项，填空题直接打字进去就行
+            # 可以对照抓包中的Hex编码修改
+            &quot;latitude&quot;: &quot;**** &quot;, # 维度
+            &quot;longitude&quot;: &quot;**** &quot;, # 经度
+            #  填入你家所在位置的经纬度，直接在地址后面加经纬度 然后百度就知道了
+            #  都可以自己填经纬度了，改定位不用我教了吧
+            &quot;country&quot;: &quot;中国&quot;,
+            &quot;city&quot;: &quot;**市&quot;,
+            &quot;district&quot;: &quot;**区&quot;,
+            &quot;province&quot;: &quot;**省&quot;,
+            &quot;township&quot;: &quot;*****街道&quot;,
+            &quot;street&quot;: &quot;****路&quot;,
+            #  省市县路这些信息自己填进去就行
+             }  # 位置信息也是通过抓包获取之前是记录
+
+def run(self):
+    res = requests.post(self.api, headers=self.headers, data=self.data, ).json() # 健康打卡提交
+    msg = {
+        &quot;id&quot;: self.notifytoken,
+        &quot;text&quot;: datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + &quot;\n&quot; + &quot;现在进行云端自动打卡&quot; + &quot;\n&quot; + get_status(res),
+        &quot;type&quot;: &quot;json&quot;
+    }
+    print(type(msg))
+    requests.post(&quot;http://miaotixing.com/trigger&quot;, data=msg)  # 喵提醒的地址,会返回执行信息情况.
+    return True
+
+if __name__ == &quot;__main__&quot;:
+    Do().run()
+
+def main_handler(event, context):
+    logger.info('got event{}'.format(event))
+    return Do().run()
+</code></pre>
+<p>4.注册腾讯云，在产品里搜索云函数，创建云函数-&gt;空白模板-&gt;把修改好的代码粘贴进index.py<br>
+5.触发管理里面根据个人需求设置就好了。</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://abraxasfever.github.io/post/wang-luo-an-quan-xue-xi-bi-ji/">
+                <h3 class="post-title">
+                  网络安全学习笔记(持续更新)
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge secondary">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge ">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</h1>
+            <p class="article-meta">
+              2024-09-04
+              
+                <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge secondary">
+                  深度学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <p>Abstract: This paper presents and compares five deep-learning models based on the U-Net 3+ architecture for the automatic segmentation of brain tumours in MRI images. These complex models range from a basic U-Net 3+ to more advanced variants incorporating EfficientNet encoders, depth-wise separable convolutions, and Squeeze-and-Excitation attention mechanisms. Experiments conducted on a public dataset demonstrate significant differences in segmentation accuracy, computational efficiency, and detail handling among the models. The fully attention-based model achieves the highest segmentation accuracy, particularly in handling complex boundaries and details, albeit with higher computational complexity. In contrast, the baseline model offers the highest computational efficiency but is less effective in handling complex features. This comparative study guides model selection in resource-constrained environments and applications requiring high precision.</p>
+<ol>
+<li>Introduction<br>
+1.1.	Background<br>
+Medical image segmentation is an important field in modern medical research and clinical applications[1]. Its core task is to automatically or semi-automatically segment different anatomical structures or lesion regions in medical images, which is important for many aspects such as disease diagnosis, treatment planning, lesion tracking, and preoperative and intraoperative navigation. In recent years, with the explosive growth of medical image data and the rapid development of artificial intelligence technology[2], deep learning-based medical image segmentation methods have become a research hotspot and have shown unprecedented results in many tasks.<br>
+Among many deep learning models, the U-Net model has been widely used and achieved great success in medical image segmentation since its proposal with its unique encoder-decoder structure and jump connection mechanism[3]. The U-Net model makes it possible to accurately capture the boundary information of the target region while maintaining the spatial resolution of the image by efficiently integrating the low-level features and high-level features[4]. However, despite the excellent performance of U-Net in many application scenarios, it still has some challenges when dealing with complex lesions such as brain tumours, which are highly heterogeneous and have fuzzy boundaries, such as insufficient sensitivity to small targets, limitations in feature extraction, and insufficient robustness to unbalanced data[5-7].<br>
+Brain tumour segmentation is an important and challenging task in medical image segmentation[8-12]. The variable growth patterns of brain tumours, the complex and varied representations of tumour regions in MRI images, and the frequent interference with other lesions or tissues make accurate segmentation particularly difficult[13-17]. Traditional segmentation methods, such as those based on region growth, edge detection and threshold segmentation, are often incompetent in dealing with such complex scenarios[18]. Deep learning-based segmentation methods, especially convolutional neural networks (CNNs), have gradually become the mainstream method to solve this problem through their powerful feature extraction capability and end-to-end learning approach[19-23].<br>
+1.2.	Research Motivation<br>
+Although U-Net and its improved models such as U-Net++ and Attention U-Net have made significant progress in brain tumour segmentation tasks, however, there is still much room for exploration and optimisation in the face of the high complexity of medical image data and the imbalance of datasets[24]. Firstly, the original U-Net model is insufficient in the depth and width of feature extraction, which cannot fully capture the detailed information at different scales in the image[25], [26]. Secondly, when facing brain tumours, which are lesions with diverse structures and fuzzy boundaries, the traditional convolution operation is prone to ignore some important contextual information[27], [28]. In addition, the unbalanced nature of medical image data often leads to the model not being sensitive enough to identify the tumour region, thus affecting the segmentation accuracy[29], [30], [31]. In recent years, researchers have proposed some improvement strategies to enhance the feature extraction ability and noise immunity of the model in order to address these problems. For example, the introduction of the attention mechanism enables the model to focus on more important feature regions and improves the model's perceptual ability[32]. Deeply separable convolution enables the model to handle detailed letters better while maintaining high efficiency by reducing the number of parameters and computations[33]. EfficientNet, as a novel network architecture, has also been gradually gaining attention in medical image analysis due to its efficient parameter utilisation and excellent performance[34]. Therefore, exploring the integrated application of these new techniques in the U-Net architecture may provide new solutions for brain tumour segmentation.<br>
+1.3.	research target<br>
+This study aims to design and evaluate several improvement schemes based on the U-Net3Plus model for the task of brain tumour segmentation, to improve the accuracy and robustness of the segmentation. The specific research objectives are as follows:<br>
+Design and implementation of different variants of the U-Net3Plus model: This study will explore the U-Net3Plus model integrating the attention mechanism, deep separable convolution, and the EfficientNet encoder, and experimentally validate the impact of these improvements on brain tumour segmentation performance.</li>
+<li>Evaluating model performance in brain tumour segmentation tasks: On a publicly available brain tumour segmentation dataset, the performance of different models is systematically evaluated, comparing their strengths and weaknesses in terms of segmentation accuracy, computational efficiency, and ability to handle complex structures.</li>
+<li>Analyse the impact of different loss functions on the model training effect: Explore how the loss function settings, such as weighted BCEWithLogitsLoss, affect the training process and final segmentation results of the model on the unbalanced dataset, and provide references for solving the data imbalance problem.</li>
+<li>Propose an optimised model scheme for brain tumour segmentation: Combine the experimental results and quantitative analysis to propose the most suitable model structure for brain tumour segmentation, and discuss the possible directions of further optimisation, such as the lightweight design of the model and the integrated application of multimodal images.<br>
+This study not only provides a series of improved model methods for brain tumour segmentation, but also provides valuable insights and directions for future medical image segmentation research through systematic experiments and analysis. It is hoped that the results of this study will further promote the popularity and development of brain tumour segmentation technology in practical clinical applications.</li>
+<li>Related Work<br>
+2.1.	Overview of Medical Image Segmentation<br>
+Medical image segmentation is a key task in the field of computer vision, aiming to accurately segment different anatomical structures or lesion regions in medical images[35]. With the improvement of computing power and the accumulation of large-scale medical image data, image segmentation techniques based on deep learning have become the mainstream direction of research[36]. Medical image segmentation has a wide range of application scenarios, including but not limited to tumour detection, organ contour extraction, and surgical planning[37].<br>
+Traditional image segmentation methods such as region growing, active contour modelling and graph cut are often difficult to handle complex medical image data as they rely on predefined a priori knowledge and manual parameter tuning[38]. In addition, these methods are usually sensitive to noise and susceptible to artefacts in the image, leading to inaccurate segmentation. In recent years, deep learning methods, especially CNNs, have shown excellent performance in image segmentation. These methods greatly improve the accuracy and robustness of segmentation by automatically learning the multilevel features of an image[39].<br>
+2.2.	U-Net and its variants<br>
+The U-Net model was first proposed in 2015 by Ronneberger et al. and was initially used for the task of segmentation of cellular images[40]. The U-Net model employs a symmetric encoder-decoder structure, where the encoder is used to extract multiscale features of the image, and the decoder combines the low-level features in the encoder with the high-level features via jump connections to recover high-resolution segmentation Results. Due to the effectiveness and easy scalability of its structure, U-Net has quickly become a standard model for medical image segmentation and has been widely used in many fields[41].<br>
+To further enhance the performance of the U-Net model, researchers have proposed several improved versions. U-Net++ enhances the interaction between features at different scales by introducing dense jump connections and a deeper network structure, thus improving the accuracy of segmentation[42]. Attention U-Net incorporates an attention mechanism in the jump connections, which allows the model to adaptively select the most favourable features for the segmentation task, improving the robustness and accuracy of the model[43]. The most favourable features of the segmentation task improves the robustness and accuracy of the model. In addition, 3D U-Net extends U-Net to the structure of 3D convolution, enabling the model to better handle 3D medical images such as CT and MRI data[44].<br>
+2.3.	Brain tumour segmentation technique<br>
+Brain tumour segmentation is an important application area in medical image segmentation with significant clinical value. Accurate brain tumour segmentation can help doctors make accurate diagnosis and treatment plans. However, brain tumour representations in medical images are usually complex and varied, the boundaries between the tumour region and the surrounding tissues are often blurred, and the tumours are highly heterogeneous in morphology and size, which makes the segmentation task extremely challenging[45].<br>
+Early brain tumour segmentation methods mainly relied on hand-designed features and image processing-based algorithms such as threshold segmentation, region growth and morphological manipulation[46]. Although these methods can achieve some results in specific cases, they usually rely on preset parameters and are difficult to cope with image data generated from different patients and different devices.<br>
+With the rise of deep learning, brain tumour segmentation methods based on convolutional neural networks have gradually become mainstream[47]. The success of the BraTS challenge has driven the rapid development of such methods.[48] Among these methods, U-Net and its variant models are widely used, and researchers continue to improve the accuracy of brain tumour segmentation by introducing different structural improvements and data enhancement strategies. For example, the V-Net model significantly improves the segmentation of 3D MRI data by using 3D convolution and residual concatenation, while the DeepMedic model achieves good segmentation at different scales by using a two-channel convolutional neural network to process low- and high-resolution image data separately.<br>
+2.4.	Attentional Mechanisms in Medical Image Segmentation<br>
+Attention mechanisms were first proposed in the field of natural language processing, and have been gradually introduced into the field of computer vision in recent years, especially in image segmentation tasks[49]. The attention mechanism enables the model to better handle images with complex backgrounds or high noise by dynamically adjusting the model's attention to features in different regions.[50]<br>
+In medical image segmentation, the attention mechanism is effective in improving segmentation accuracy[51]. The Attention U-Net model proposed by Wang et al. By introducing an attention module into the jump connections of U-Net, the model can focus on the lesion region more accurately while reducing the sensitivity to background noise. [52]Since then, researchers have further proposed various improved attention mechanisms, such as the self-attention mechanism and the multi-head attention mechanism, to further enhance the model performance. In addition, a convolutional attention module combining a long short-term memory network (LSTM) and a convolutional neural network has also been applied to segmentation tasks of time-series images, such as dynamic MRI segmentation of the heart[53].<br>
+2.5.	Deep Separable Convolution with EfficientNet<br>
+Depthwise Separable Convolution (DSC) is an efficient convolution operation proposed in recent years, which significantly reduces the number of parameters and computation of the model by decomposing the standard convolution into depthwise convolution and point-by-point convolution while maintaining the expressive power of the model to a certain extent[54]. This convolution operation has been successfully applied in many lightweight neural networks, such as MobileNet and Xceptio.<br>
+EfficientNet is a new neural network architecture proposed by Google Research, which has demonstrated excellent performance and effectiveness in several computer vision tasks with its multi-dimensional scaling strategy based on composite coefficients, including width, depth, and resolution[55]. EfficientNet utilises techniques such as depth-separable convolution and automatic search for hyperparameters, which greatly improves the model's computational efficiency. EfficientNet has been successfully applied as an encoder in medical image segmentation tasks and has shown good results[56].<br>
+2.6.	Application of Loss Functions to Unbalanced Datasets<br>
+Medical image data are usually highly unbalanced, i.e., the pixel share of the lesion region is much smaller than that of the background region[57]. Traditional loss functions such as Cross-Entropy Loss (CEL) tend to cause the model to be biased towards predicting the majority class when dealing with unbalanced data, which leads to unsatisfactory segmentation results. To solve this problem, researchers have proposed a variety of improved loss functions.<br>
+Weighted Cross-Entropy Loss allows the model to focus more on fewer classes during training by assigning different weights to different classes. In addition, Dice Loss and IoU Loss, which are optimised directly based on the overlap metric of the segmentation results, have been shown to perform better on unbalanced datasets. Recently, some studies have combined the advantages of different loss functions, such as Tversky Loss and Focal Loss, which show excellent performance when dealing with small targets and complex backgrounds[58].<br>
+2.7.	Innovations and differences in this study<br>
+Although a large number of studies have explored the U-Net and its variants on the model, there is still a lot of under-explored potential in the field of brain tumour segmentation. The innovative aspect of this study is:</li>
+<li>Introduction of multiple novel model structures: This study explores the integration of the Attention mechanism, deep separable convolution and EfficientNet encoder in the U-Net3Plus model, to achieve better results in brain tumour segmentation.</li>
+<li>Comprehensive evaluation of different loss functions: To address the imbalance problem in brain tumour datasets, this study compares in detail the performance of loss functions such as weighted cross entropy and Dice loss in model training, which provides a new perspective for dealing with imbalanced datasets.</li>
+<li>Systematic experimental validation: This study designed comprehensive experiments using different models, different loss functions and their combinations, conducted comparative analyses, and systematically evaluated their respective strengths and weaknesses, providing a reference basis for future research and applications.<br>
+By integrating and innovating the current state-of-the-art techniques, this study not only achieved good experimental results in the brain tumour segmentation task, but also provided new methods and ideas for future medical image segmentation research.</li>
+<li>Methodology<br>
+3.1.	Model Architecture Overview<br>
+The main goal of this study is to develop an efficient and accurate brain tumour segmentation model that can provide competitive performance when dealing with complex medical imaging data. To achieve this goal, we have made several improvements and optimisations based on the classical U-Net architecture, resulting in several different model variants. Each variant aims to improve the segmentation accuracy and computational efficiency of the model by introducing different state-of-the-art techniques, such as the attention mechanism, deep separable convolution and EfficientNet encoder.<br>
+Firstly, we constructed several variant models based on the U-Net3Plus model, each of which maintains the same encoder-decoder symmetric structure at its core but introduces specific enhancement mechanisms at different levels. These variant models are innovatively improved in several key aspects, such as feature extraction, feature fusion and segmentation result generation, and finally form a segmentation framework with excellent performance.<br>
+3.2.	U-Net3Plus model<br>
+The U-Net3Plus model is an important extension to the U-Net architecture, aiming to enhance the model's ability to capture multi-scale information by improving the feature fusion strategy. Compared with the traditional U-Net model, U-Net3Plus not only uses feature maps from the corresponding encoder layer, but also fuses multiple feature maps from different scales at each decoding stage, which enables the model to have stronger expressive ability in segmenting small targets and detailed regions.<br>
+In the U-Net3Plus model, the encoder part mainly consists of five convolutional blocks, each of which consists of two convolutional operations and one downsampling operation to extract the multiscale features of the input image respectively. The decoder part then gradually recovers the resolution of the original image through the fusion of multi-scale features. Specifically, each stage of the decoder splices the up-sampled features of the current layer with the feature maps extracted from different coding layers to form a feature map containing rich semantic information. Eventually, the decoder generates high-resolution segmentation results through a series of convolution operations.<br>
+3.3.	Introduction of the attention mechanism<br>
+In medical image segmentation tasks, target regions often account for a small percentage of the image and have complex shapes and texture structures. In order to improve the model's attention to these target regions, this study introduces an attention mechanism based on the U-Net3Plus model.<br>
+Specifically, we incorporate a channel attention mechanism (SE Block) at the jump junctions in the decoder section.The SE Block enables the model to pay more attention to important features related to the target while suppressing irrelevant features related to the background during the feature fusion process by adaptively adjusting the weights of each channel.The specific operation of the SE Block consists of firstly performing a global average pooling on the input feature map Global average pooling is performed to obtain the global information of each channel, then the weights of each channel are calculated through a series of fully connected layers and activation functions, and finally these weights are applied to the original feature map to form a weighted feature map for the next step.<br>
+By introducing the attention mechanism, the model can identify and segment the target region more accurately in the face of complex backgrounds and noise, thus improving the accuracy of segmentation.<br>
+3.4.	Applications of Deeply Separable Convolution<br>
+Depthwise Separable Convolution (DSC) is a more computationally efficient convolution operation that decomposes the standard convolution into two parts, depth convolution and point-by-point convolution, which significantly reduces the number of parameters and computation of the model.<br>
+In this study, we apply deep separable convolution to the encoder and decoder portions of the U-Net3Plus model, replacing the traditional standard convolution operation. Specifically, deep convolution first performs the convolution operation independently on each input channel, thus preserving the independence between channels. Next, point-by-point convolution fuses the information from all channels through 1x1 convolution to form a new feature map. In this way, deep separable convolution drastically reduces the computational cost while guaranteeing the feature extraction capability, enabling the model to handle larger datasets with limited computational resources.<br>
+3.5.	Integration of EfficientNet encoders<br>
+To further improve the feature extraction capability of the model, we use EfficientNet as an encoder in some of the model variants.EfficientNet is an efficient convolutional neural network based on a composite coefficient scaling strategy, which enables the model to have strong expressive power while maintaining low computational complexity by integrally adjusting the width, depth and resolution of the network .<br>
+Specifically, each block of EfficientNet consists of multiple Inverted Residual Blocks that are enhanced for feature extraction by depth-separable convolution, expansion and contraction operations, and jump connections. In this study, we use the EfficientNet encoder in conjunction with the decoder part of U-Net3Plus, which enables the model to process high-resolution medical images with both global information and local details, thus improving the accuracy of the segmentation results.<br>
+3.6.	Loss function design and training strategy<br>
+The problem of category imbalance often exists in medical image data, i.e. the target region of interest (e.g. tumour) is extremely under-represented compared to the background region. In order to solve this problem, we designed various loss functions during model training and adopted appropriate training strategies.<br>
+First, we used the weighted BCEWithLogitsLoss as the base loss function. By setting different weights for each class, we enable the model to pay more attention to the minority class during the training process, avoiding the problem that the loss function is biased towards the majority class in most cases. In addition, we also tried loss functions specifically for the segmentation task such as Dice loss and IoU loss to further optimise the segmentation effect of the model.<br>
+During the training process, we also introduce strategies such as learning rate scheduler and gradient trimming to ensure the stability and convergence of the model during training. The learning rate scheduler dynamically adjusts the learning rate so that the model can learn quickly in the early stage of training and converge stably in the late stage of training to avoid overfitting. Gradient trimming ensures stable training of the model by limiting the maximum value of the gradient and preventing the gradient from exploding during backpropagation.<br>
+3.7.	Experimental design and evaluation indicators<br>
+In order to comprehensively evaluate the performance of the proposed model variants, a series of experiments were designed in this study and multiple evaluation metrics were used for performance comparison. Specifically, we selected the brain tumour segmentation dataset and divided it into a training set and a testing set. During the experiments, we trained each model variant several times and recorded the changes in loss values during the training process.<br>
+In order to evaluate the segmentation performance of the model, we use several indicators including mIoU (average intersection ratio), Dice coefficient, Accuracy and Precision. These metrics can reflect the segmentation effect of the model from different perspectives, e.g., mIoU and Dice coefficient are mainly used to assess the degree of overlap between the segmentation results and the real labels, while Accuracy and Precision are used to assess the overall prediction accuracy of the model and the ability to recognise the positive classes, respectively.<br>
+Through these experiments and evaluations, we were able to systematically analyse the advantages and disadvantages of different model structures and training strategies, and provide valuable references for future research.<br>
+3.8.	Implementation details<br>
+In order to ensure the reproducibility of the experimental results and the practical applicability of the model, this study is also designed in detail in the implementation details. We used PyTorch as the deep learning framework and used Mixed Precision Training (MPT) in the training process to speed up the training. All experiments were conducted in an environment with NVIDIA GPUs, which ensured that the model could be trained in a reasonable amount of time.<br>
+In addition, we also recorded the loss changes and evaluation metrics during the training process via TensorBoard, making the whole experiment process well visualised. This not only helps us to monitor the performance of the model in real time during the training process, but also provides detailed data support for subsequent analyses and reports.</li>
+<li>Models Overview<br>
+4.1.	U-Net 3+ (Baseline):<br>
+Description: The basic model retains the core structure of U-Net 3+, focusing on a symmetric encoder-decoder architecture.<br>
+Strengths: High computational efficiency.<br>
+Weaknesses: Less effective in handling complex features and boundaries.</li>
+</ol>
+<p><img src="https://abraxasfever.github.io//post-images/1726322482456.png" alt="" loading="lazy"><br>
+Figure 1:U-Net 3+ Model Architecture</p>
+<p>4.2.	U-Net 3+ with HDC (Test_batch2_HDC):<br>
+Description: Introduces Hybrid Dilated Convolution (HDC) to capture features at various scales more effectively.<br>
+Strengths: Improved feature extraction capability and better handling of complex structures.<br>
+Weaknesses: Exhibits significant fluctuations during training, indicating potential stability issues.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322404686.png" alt="" loading="lazy"><br>
+Figure 2: HDC Decoder Architecture in U-Net 3+ Model</p>
+<p>4.3.	U-Net 3+ with HDC and Deep Convolution (Test_batch2_HDC_DEEP):<br>
+Description: Combines HDC with deep separable convolutions, further enhancing feature extraction and reducing computational load.<br>
+Strengths: Best overall performance in terms of convergence, stability, and final loss values. It has a smooth and stable learning curve, making it the top-performing model in this comparison.<br>
+Weaknesses: Slightly more computationally demanding compared to the baseline.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322389067.png" alt="" loading="lazy"><br>
+Figure 3: Deep Separable Convolution Process</p>
+<p>4.4.	U-Net 3+ with HDC and EfficientNet (Test_batch2_HDC_EFF):<br>
+Description: Utilizes EfficientNet as the encoder, known for its efficient parameter utilization and superior performance.<br>
+Strengths: Achieves good convergence and stability, with a balanced approach to feature extraction and computational efficiency.<br>
+Weaknesses: Although it performs well, it doesn't match the stability and low loss achieved by the HDC_DEEP variant.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322350068.png" alt="" loading="lazy"><br>
+Figure 4: EfficientNet Encoder in U-Net 3+ Model</p>
+<p>4.5.	U-Net 3+ with Squeeze-and-Excitation (SE) Block (Test_batch2_Squeeze):<br>
+Description: Incorporates the SE Block, focusing on channel-wise attention to enhance important features.<br>
+Strengths: Improved attention to significant features, potentially beneficial in highly noisy environments.<br>
+Weaknesses: Slower convergence and higher volatility during training, resulting in higher final loss values compared to other models.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322425216.png" alt="" loading="lazy"><br>
+Figure 5: Attention Mechanism in U-Net 3+ Model</p>
+<ol start="5">
+<li>Analysis of Training Loss and Convergence<br>
+5.1.	Experimental Results<br>
+In this section, we present the comparative analysis of the training loss curves for different models trained on the brain tumour segmentation dataset. The models under consideration include HDC_30_b2, HDC_DEEP_30_b2, HDC_EFF_30_b2, Squeeze_30_b2, and UNet3+_30_b2. The training process was carried out over 14,399 steps, and the loss values were recorded at each step. The graph in Figure X displays the loss curves, providing insights into each model's performance in terms of convergence speed, final loss value, and stability.<br>
+5.2.	Model Convergence Analysis<br>
+As seen in Figure 6, all the models show a steep initial drop in loss during the early stages of training, which is a common pattern in deep learning as the models quickly learn basic patterns from the data. However, the rate of loss reduction slows down after around 4,000 steps, with models converging towards their final loss values.<br>
+•	HDC_DEEP_30_b2 (black curve) achieves the best performance with the lowest final loss value of 0.0009. This indicates that this model has learned the most accurate representations for the given task. It also converges relatively quickly, maintaining low volatility after 4,000 steps.<br>
+•	HDC_EFF_30_b2 (blue curve) follows closely, with a final loss of 0.0011. While this model does not quite match the accuracy of HDC_DEEP_30_b2, it demonstrates a consistent reduction in loss with minimal fluctuations after 4,000 steps, showing a smooth convergence pattern.<br>
+•	UNet3+_30_b2 (yellow curve) also performs well, reaching a final loss of 0.001. Although it achieves a low final loss, the model exhibits more fluctuations throughout the training process, indicating less stability compared to the other models.<br>
+•	HDC_30_b2 (purple curve) and Squeeze_30_b2 (orange curve) exhibit slightly higher final losses of 0.0036 and 0.0035, respectively. Both models show relatively consistent performance but with more noticeable volatility during the training, particularly between 2,000 and 10,000 steps.<br>
+5.3.	Model Stability Analysis<br>
+Stability is a key indicator of a model's robustness. From the loss curves in Figure 6, we observe that HDC_DEEP_30_b2 and HDC_EFF_30_b2 demonstrate the highest stability, with relatively smooth curves and minimal fluctuations in the latter stages of training. This suggests that these models generalize well to the training data and do not exhibit overfitting or instability issues.<br>
+•	Squeeze_30_b2 and UNet3+_30_b2 exhibit more volatility, which could indicate that these models are more sensitive to certain data batches or require further hyperparameter tuning to achieve more consistent performance.<br>
+•	HDC_30_b2, despite achieving good convergence, shows more pronounced fluctuations, particularly before 10,000 steps, which suggests that the model may struggle with data generalization in certain cases.<br>
+5.4.	Comparative Performance<br>
+The overall performance of each model can be summarized as follows:<br>
+Figure 7: Model Performance Metrics (mIoU, Precision, Recall)<br>
+•	HDC_DEEP_30_b2 emerges as the top-performing model, achieving the lowest final loss value and exhibiting excellent stability throughout the training process.<br>
+•	HDC_EFF_30_b2 follows closely behind, with slightly higher loss values but good stability, making it another strong candidate for segmentation tasks.<br>
+•	UNet3+_30_b2 demonstrates competitive performance but shows higher volatility, which might require further adjustments in terms of batch size or learning rate.<br>
+•	HDC_30_b2 and Squeeze_30_b2 perform relatively well but are outperformed by the other models in terms of stability and final loss values, indicating room for optimization.<br>
+5.5.	Summary of Results<br>
+The experimental results highlight the strengths and weaknesses of each model. HDC_DEEP_30_b2 and HDC_EFF_30_b2 are the most promising architectures for the brain tumor segmentation task, as they demonstrate faster convergence, better stability, and lower loss values. Squeeze_30_b2 and UNet3+_30_b2 show decent performance but require further adjustments to improve their stability and final loss. These results provide valuable insights into the effectiveness of different architectures and inform future efforts to optimize these models for medical image segmentation tasks.</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1726322538572.png" alt="" loading="lazy"></figure>
+<ol start="6">
+<li>Quantitative Analysis of Segmentation Models<br>
+In this section, we present the comparative analysis of the training loss curves for different models trained on the brain tumor segmentation dataset. The models under consideration include HDC_30_b2, HDC_DEEP_30_b2, HDC_EFF_30_b2, Squeeze_30_b2, and UNet3+_30_b2. The training process was carried out over 14,399 steps, and the loss values were recorded at each step. The graph in Figure 7 displays the loss curves, providing insights into each model's performance in terms of convergence speed, final loss value, and stability.<br>
+MODEL	MIOU (%)	MPA (%)	PRECISION (%)	RECALL (%)	TRAINING TIME (HR)<br>
+HDC	94.94	95.88	98.90	95.88	6.705<br>
+HDC_DEEP	94.94	95.88	98.90	95.88	6.331<br>
+HDC_EFF	94.79	95.92	98.78	95.62	6.804<br>
+UNET3+	94.83	96.03	98.59	96.03	6.713<br>
+SQUEEZE	96.07	98.25	97.66	98.25	6.529<br>
+6.1.	Model Convergence Analysis<br>
+As seen in Figure 7, all the models show a steep initial drop in loss during the early stages of training, which is a common pattern in deep learning as the models quickly learn basic patterns from the data. However, the rate of loss reduction slows down after around 4,000 steps, with models converging towards their final loss values.<br>
+•	HDC_DEEP_30_b2 (black curve) achieves the best performance with the lowest final loss value of 0.0009. This indicates that this model has learned the most accurate representations for the given task. It also converges relatively quickly, maintaining low volatility after 4,000 steps.<br>
+•	HDC_EFF_30_b2 (blue curve) follows closely, with a final loss of 0.0011. While this model does not quite match the accuracy of HDC_DEEP_30_b2, it demonstrates a consistent reduction in loss with minimal fluctuations after 4,000 steps, showing a smooth convergence pattern.<br>
+•	UNet3+_30_b2 (yellow curve) also performs well, reaching a final loss of 0.001. Although it achieves a low final loss, the model exhibits more fluctuations throughout the training process, indicating less stability compared to the other models.<br>
+•	HDC_30_b2 (purple curve) and Squeeze_30_b2 (orange curve) exhibit slightly higher final losses of 0.0036 and 0.0035, respectively. Both models show relatively consistent performance but with more noticeable volatility during the training, particularly between 2,000 and 10,000 steps.<br>
+6.2.	Model Stability Analysis<br>
+Stability is a key indicator of a model's robustness. From the loss curves in Figure X, we observe that HDC_DEEP_30_b2 and HDC_EFF_30_b2 demonstrate the highest stability, with relatively smooth curves and minimal fluctuations in the latter stages of training. This suggests that these models generalize well to the training data and do not exhibit overfitting or instability issues.<br>
+•	Squeeze_30_b2 and UNet3+_30_b2 exhibit more volatility, which could indicate that these models are more sensitive to certain data batches or require further hyperparameter tuning to achieve more consistent performance.<br>
+•	HDC_30_b2, despite achieving good convergence, shows more pronounced fluctuations, particularly before 10,000 steps, which suggests that the model may struggle with data generalization in certain cases.<br>
+6.3.	Comparative Performance<br>
+The overall performance of each model can be summarized as follows:<br>
+•	HDC_DEEP_30_b2 emerges as the top-performing model, achieving the lowest final loss value and exhibiting excellent stability throughout the training process.<br>
+•	HDC_EFF_30_b2 follows closely behind, with slightly higher loss values but good stability, making it another strong candidate for segmentation tasks.<br>
+•	UNet3+_30_b2 demonstrates competitive performance but shows higher volatility, which might require further adjustments in terms of batch size or learning rate.<br>
+•	HDC_30_b2 and Squeeze_30_b2 perform relatively well but are outperformed by the other models in terms of stability and final loss values, indicating room for optimization.<br>
+6.4.	Summary of Results<br>
+The experimental results highlight the strengths and weaknesses of each model. HDC_DEEP_30_b2 and HDC_EFF_30_b2 are the most promising architectures for the brain tumour segmentation task, as they demonstrate faster convergence, better stability, and lower loss values. Squeeze_30_b2 and UNet3+_30_b2 show decent performance but require further adjustments to improve their stability and final loss. These results provide valuable insights into the effectiveness of different architectures and inform future efforts to optimize these models for medical image segmentation tasks.</li>
+<li>Qualitative Comparison of Segmentation Results<br>
+In addition to the quantitative evaluation metrics such as mIoU, mPA, precision, and recall, we conducted a qualitative comparison of the segmentation performance across different models. Figure 8 shows the segmentation output of various models, including HDC, HDC_EFF, HDC_DEEP, Basic, and Squeeze, alongside the ground truth result for a specific brain tumor segmentation case.<br>
+As seen in the figure, all models have successfully identified the tumor region, demonstrating effective segmentation capability. However, subtle differences in the shape and size of the segmented regions can be observed. The HDC model variants (HDC, HDC_EFF, and HDC_DEEP) tend to produce more consistent and well-defined segmentation boundaries compared to the Basic and Squeeze models.</li>
+</ol>
+<p><img src="https://abraxasfever.github.io//post-images/1726322721828.png" alt="" loading="lazy"><br>
+Figure 8: Segmentation Results Comparison</p>
+<p>•	HDC vs. HDC_EFF: Both models show highly accurate segmentation, but HDC_EFF tends to be slightly more consistent in capturing the exact boundaries of the tumour, likely due to its more efficient feature extraction process.<br>
+•	HDC_DEEP: The deeper architecture variant shows comparable performance to HDC and HDC_EFF, maintaining the same level of detail in the segmented tumour area.<br>
+•	Basic Model: While performing reasonably well, the Basic model exhibits slight deviations in the boundary definition, which could impact its overall segmentation accuracy, as seen in the quantitative metrics.<br>
+•	Squeeze Model: The Squeeze model also performs well, though it occasionally misses finer details of the tumour shape, as evidenced by minor boundary discrepancies.<br>
+In conclusion, the visual comparison complements the quantitative evaluation, reinforcing that the HDC and its variants (HDC_EFF, HDC_DEEP) offer superior segmentation quality compared to the Basic and Squeeze models.<br>
+8.	Conclusion<br>
+In this study, we explored the application of several deep learning models, particularly U-Net 3+ and its variants, for the task of brain tumour segmentation using MRI data. The results indicate that while the baseline U-Net 3+ model offers computational efficiency, the introduction of advanced techniques such as Hybrid Dilated Convolutions (HDC), Deep Convolution, EfficientNet encoders, and Squeeze-and-Excitation Blocks significantly enhances the model's ability to capture complex tumor boundaries and intricate details.<br>
+Among the models evaluated, the U-Net 3+ with HDC and Deep Convolution (HDC_DEEP) exhibited the best overall performance in terms of segmentation accuracy, convergence stability, and computational efficiency. The use of attention mechanisms and depth-wise separable convolutions in this variant allowed for superior handling of complex lesion structures while maintaining a reasonable computational load. The model also demonstrated smooth learning curves and stability throughout the training process, making it a strong candidate for further development in real-world medical applications.<br>
+In contrast, models incorporating EfficientNet and Squeeze-and-Excitation Blocks showed strong potential but fell slightly behind in terms of stability and computational demands. Nevertheless, these models performed well in noisy environments, making them suitable for applications requiring high precision in challenging conditions.<br>
+The experimental results presented in this study provide a comprehensive evaluation of different model architectures, offering insights into the trade-offs between computational efficiency and segmentation accuracy. Future work may focus on further optimizing these models by exploring multimodal data integration and lightweight architectures, as well as addressing class imbalance in medical datasets through improved loss function designs. These enhancements have the potential to push the boundaries of automated brain tumor segmentation, improving clinical outcomes through more accurate and reliable image analysis.</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">
+                <h3 class="post-title">
+                  基于Metasploit的Log4j2漏洞利用模块
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge warning">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge secondary">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

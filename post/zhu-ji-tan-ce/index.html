@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>主机探测 | 执徐的小博客</title>
+<meta name="description" content="con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://abraxasfever.github.io//favicon.ico?v=1726716634081">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://abraxasfever.github.io//styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://abraxasfever.github.io/">执徐的小博客</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>主机探测</h1>
+            <p class="article-meta">
+              2020-08-07
+              
+                <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge warning">
+                  HACK学习
+                </a>
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="二层发现">二层发现</h2>
+<h3 id="osi分层介绍">OSI分层介绍</h3>
+<p>OSI，即开放式系统互联</p>
+<h3 id="二层发现优缺点">二层发现优缺点</h3>
+<p>二层发现指：利用OSI中链路层中的协议进行主机发现。一般使用ARP协议。<br>
+（局域网中通信使用ARP协议，利用MAC地址地址作为对应的识别地址）</p>
+<h4 id="优点">优点：</h4>
+<p>1.速度快<br>
+2.可靠性高</p>
+<h4 id="缺点">缺点：</h4>
+<p>无法扫描经过路由的主机</p>
+<h3 id="二层主机发现工具">二层主机发现工具</h3>
+<h4 id="二层发现-arping工具">二层发现-arping工具</h4>
+<p>kali linux下自带工具arping可以进行二层主机发现。缺点：无法多个主机同时扫描。</p>
+<pre><code>arping IP地址 -c 1
+</code></pre>
+<h4 id="二层发现-netdiscover">二层发现-netdiscover</h4>
+<p>kali linux自带工具netdiscover，可以针对特定子网进行多主机扫描</p>
+<pre><code>netdiscover  -r IP地址
+</code></pre>
+<h2 id="三层主机发现">三层主机发现</h2>
+<p>三层主机发现：利用OSI中网络中的协议进行主机发现，一般使用ICMP协议</p>
+<h3 id="三层主机发现优缺点">三层主机发现优缺点</h3>
+<h4 id="优点-2">优点：</h4>
+<p>1.可以发现远程主机，经过路由的主机<br>
+2.速度相对比较快</p>
+<h4 id="缺点-2">缺点：</h4>
+<p>1.经常被防火墙过滤<br>
+2.速度相对二层发现慢</p>
+<h3 id="三层主机发现工具">三层主机发现工具</h3>
+<h4 id="三层发现-ping工具">三层发现-ping工具</h4>
+<p>ping工具在Linux和Windows都有自带，Linux下如果不指定-c参数，会一直扫描。Windows下默认进行四次探测。</p>
+<h4 id="三层发现-fping工具">三层发现-fping工具</h4>
+<p>Kali linux下自带fping可以进行三层主机发现，可以针对多个主机同时进行主机发现。</p>
+<pre><code>fping -g 192.168.1.0/24
+</code></pre>
+<h4 id="三层发现-hping3工具">三层发现-hping3工具</h4>
+<p>kali linux自带工具hping3对目标进行三层主机发现。特点：发送自定义ICMP数据包</p>
+<h2 id="四层发现">四层发现</h2>
+<p>四层发现指利用OSI中的传输协议进行主机发现，一般使用TCP、UDP探测</p>
+<h3 id="四层发现优缺点">四层发现优缺点</h3>
+<h4 id="优点-3">优点：</h4>
+<p>1.可以探测远程主机<br>
+2.比三层发现更可靠</p>
+<h4 id="缺点-3">缺点：</h4>
+<p>花费时间更长</p>
+<h3 id="四层发现工具">四层发现工具</h3>
+<h4 id="四层发现-nmap工具">四层发现-nmap工具</h4>
+<p>kali linux自带的Nmap工具，可以进行二三四层的探测<br>
+<img src="https://abraxasfever.github.io//post-images/1597235496735.png" alt="" loading="lazy"></p>
+<h4 id="四层发现-hping3工具">四层发现-hping3工具</h4>
+<p>Kali linux下自带工具hping2可以进行对应的四层主机发现。</p>
+<pre><code>hping3 --udp -c 3 IP地址
+</code></pre>
+<h2 id="主机发现-python脚本">主机发现-python脚本</h2>
+<p>使用GitHub上分享的一个主机发现脚本-nWatch:https://github.com/s0cket7/nWatch</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://abraxasfever.github.io//images/avatar.png?v=1726716634081" class="no-responsive avatar">
+    <div class="text-muted">con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/nao-zhong-liu-tu-xiang-fen-ge-model/">脑肿瘤图像分割UNet3+_Deep_HDC</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/shen-du-xue-xi/">Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">基于Metasploit的Log4j2漏洞利用模块</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">我在校园自动打卡</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-tomcat/">漏洞利用-tomcat管理密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-irc/">漏洞利用-irc后门利用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-vnc/">漏洞利用-vnc密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-postgresql/">漏洞利用-postgresql数据库密码破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-mysql/">漏洞利用-mysql弱口令破解</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://abraxasfever.github.io/post/web-proftpd/">漏洞利用-proftpd测试</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://abraxasfever.github.io/tag/DeepLearning/" class="badge secondary">
+          深度学习
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/CyberSecurity/" class="badge secondary">
+          网络安全
+        </a>
+      
+        <a href="https://abraxasfever.github.io/tag/6lgRqMl6z/" class="badge ">
+          HACK学习
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+     | <a class="rss" href="https://abraxasfever.github.io//atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

